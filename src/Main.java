@@ -1,5 +1,10 @@
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Hello world!");
+        ArbUsuarios arb = new ArbUsuarios();
+        arb.cargarDatos();
+        Menu menu = new Menu(arb);
+        menu.mostrarMenuPrincipal();
+        arb.guardarDatos();
+
     }
 }
