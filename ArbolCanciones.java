@@ -7,7 +7,7 @@ class ArbolCanciones {
         this.canciones = null;
     }
 
-    public void insertarUsuario(String titulo) {
+    public void insertarCancion(String titulo) {
         this.canciones = insertarCancionRec(this.canciones, new NodoCancion(titulo));
     }
 

@@ -20,6 +20,7 @@ class NodoUsuario {
     public void insertarPlaylistPropiaOrdenado(String nombre) {
         NodoPlaylistPropiaLista nuevo = new NodoPlaylistPropiaLista(nombre);
         NodoPlaylistPropiaLista anterior = null, actual = this.listaPlaylistsPropias;
+        // while (actual != null && actual.getNombre().compareToIgnoreCase(nuevo.getNombre()) < 0) {
         while (actual != null && actual.getNombre().compareToIgnoreCase(nuevo.getNombre()) < 0) {
             anterior = actual;
             actual = actual.getSiguiente();
@@ -33,8 +34,23 @@ class NodoUsuario {
     }
 
     // Orden: primero por nombre de usuario, después por nombre de playlist
-    public void insertarPlaylistSeguidaOrdenado() {
-
+    public void insertarPlaylistSeguidaOrdenado(String usuario, String nombre) {
+        NodoPlaylistSeguida nuevo = new NodoPlaylistSeguida(usuario, nombre);
+        NodoPlaylistSeguida anterior = null, actual = this.listaPlaylistsSeguidas;
+        // ¿temporal?
+        while (actual != null &&
+            actual.getUsuario().compareToIgnoreCase(nuevo.getUsuario()) < 0 ||
+            actual.getUsuario().compareToIgnoreCase(nuevo.getUsuario()) == 0 &&
+            actual.getNombre().compareToIgnoreCase(nuevo.getNombre()) < 0) {
+            anterior = actual;
+            actual = actual.getSiguiente();
+        }
+        nuevo.setSiguiente(actual);
+        if (anterior != null) {
+            anterior.setSiguiente(nuevo);
+        } else {
+            this.listaPlaylistsSeguidas = nuevo;
+        }
     }
 
     public String getNombre() {
