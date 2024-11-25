@@ -2,7 +2,7 @@
 class ArbolCanciones {
     NodoCancion canciones;
 
-     // Constructor innecesario
+     // Constructor innecesario.
     public ArbolCanciones() {
         this.canciones = null;
     }

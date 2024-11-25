@@ -7,6 +7,8 @@ class NodoPlaylistPropiaLista {
 
     public NodoPlaylistPropiaLista(String nombre) {
         this.nombre = nombre;
+        this.canciones = null; // Innecesario
+        this.siguiente = null; // Innecesario
     }
 
     public String getNombre() {
@@ -22,6 +24,7 @@ class NodoPlaylistPropiaLista {
     }
 
     // TO DO
+    // Inserción sin orden.
     public void insertarNodoCancion() {
 
     }

@@ -2,11 +2,12 @@
 class ListaAutores {
     NodoAutor listaAutores; // (lista ordenada)
 
-    // Constructor innecesario
+    // Constructor innecesario.
     public ListaAutores() {
         this.listaAutores = null;
     }
 
+    // Inserción con orden alfabético.
     public void insertarAutorOrdenado(String nombre) {
         NodoAutor nuevo = new NodoAutor(nombre);
         NodoAutor anterior = null, actual = this.listaAutores;
