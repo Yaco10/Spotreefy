@@ -9,16 +9,18 @@ public class Interfaz {
     private Scanner scanner;
     private ArbolCanciones arbolCanciones;
     private ListaAutores listaAutores;
+    private ArbolUsuarios arbolUsuarios;
 
-    public Interfaz (NodoUsuario usuario, ArbolCanciones arbolCanciones, ListaAutores listaAutores) {
-        this.usuario = usuario;
+    public Interfaz (ArbolUsuarios arbolUsuarios ,ArbolCanciones arbolCanciones, ListaAutores listaAutores) {
+        this.usuario = null;
+        this.arbolUsuarios = arbolUsuarios;
         this.arbolCanciones = arbolCanciones;
         this.listaAutores = listaAutores;
         scanner = new Scanner(System.in);
     }
 
 
-    public void mostrarInterfaz(NodoUsuario usuario){
+    public void mostrarInterfaz(){
         int opcion;
         System.out.println("Usuario" + usuario.getNombre());
         System.out.println("Listas Propias");
@@ -158,6 +160,11 @@ public class Interfaz {
         Pattern pattern = Pattern.compile(REGEX_CANCION);
         Matcher matcher = pattern.matcher(texto);
         return matcher.matches();
+    }
+
+    //GETTER AND SETTER
+    public void setUsuario(NodoUsuario usuario){
+        this.usuario = usuario;
     }
 }
 

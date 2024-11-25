@@ -17,6 +17,8 @@ class NodoAutor {
 
     public void mostrarCanciones(){}
 
-    public NodoCancion buscarCancion(String nombre){}
+    public NodoCancion buscarCancion(String nombre){
+        return null;
+    }
 }
 

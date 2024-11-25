@@ -1,17 +1,19 @@
+import javax.swing.*;
 import java.util.*;
 import java.util.regex.*;
 
 public class Menu {
     public static final String REGEX_NOMBRE = "^[A-Za-z0-9]{1,8}$";
-    public static final String REGEX_CANCION = "^[A-Za-z0-9]{1,30}$";
     private Scanner scanner;
     private ArbolUsuarios arbUsuarios;
+    private Interfaz interfaz;
+    private NodoUsuario usuario;
 
     public Menu(ArbolUsuarios arbol, ArbolCanciones arbolCanciones, ListaAutores listaAutores) {
         scanner = new Scanner(System.in);
         arbUsuarios = arbol;
-        ArbolCanciones = arbolCanciones;
-        ListaAutores = listaAutores
+        usuario = null;
+        interfaz = new Interfaz(arbol,arbolCanciones,listaAutores);
     }
 
     public void mostrarMenuPrincipal() {
@@ -43,18 +45,28 @@ public class Menu {
 
 
     private void login () {
-        System.out.println("Ingrese su usuario");
-        String usuario = scanner.nextLine();
-        System.out.println("Ingrese contraseña");
-        String contraseña = scanner.nextLine();
-        while (arbUsuarios.buscarUsuario(usuario,contraseña) == null) {
-                System.out.println("Contraseña incorrecta Ingrese Nuevamente o Presione 0");
+        String nombreUsuario;
+        String contraseña;
+        String opcion = "";
+        while (usuario == null && !"M".equalsIgnoreCase(opcion)) {
+                System.out.println("Ingrese su usuario");
+                nombreUsuario = scanner.nextLine();
+                System.out.println("Ingrese contraseña");
                 contraseña = scanner.nextLine();
+                usuario = arbUsuarios.buscarUsuario(nombreUsuario,contraseña);
+                if (usuario == null) {
+                    System.out.println("Usuario no encontrado, presione enter para volver a intentar o M para volver al menu");
+                    opcion = scanner.nextLine();
+                }
         }
-        if(contraseña != 0){
+        if(opcion.equalsIgnoreCase("M")) {
+            mostrarMenuPrincipal();
+        }
+        else if(usuario != null) {
             System.out.println("Ingreso correctamente");
+            interfaz.setUsuario(usuario);
+            interfaz.mostrarInterfaz();
         }
-
     }
 
         private void nuevoUsuario () {
@@ -68,8 +80,8 @@ public class Menu {
             System.out.println("Ingrese su contraseña");
             String contraseña = scanner.nextLine();
             //Valida contraseña
-            while (!validarNombre(usuario)) {
-                System.out.println("Ingrese una contraseña de usuario de maximo 8 caracteres");
+            while (!validarNombre(contraseña) && contraseña.length() < 6) {
+                System.out.println("Ingrese una contraseña entre 6 y 8 caracteres");
                 contraseña = scanner.nextLine();
             }
             arbUsuarios.insertarUsuario(usuario, contraseña);

@@ -46,8 +46,54 @@ class NodoUsuario {
     //mostrar todas las playlist propias
     public void mostrarPlaylistPropia() {}
 
+    //Getter y setters
+
     public String getNombre(){
         return nombre;
+    }
+
+    public String getContraseña() {
+        return contraseña;
+    }
+
+    public void setContraseña(String contraseña) {
+        this.contraseña = contraseña;
+    }
+
+    public NodoPlaylistPropiaLista getListaPlaylistsPropias() {
+        return listaPlaylistsPropias;
+    }
+
+    public void setListaPlaylistsPropias(NodoPlaylistPropiaLista listaPlaylistsPropias) {
+        this.listaPlaylistsPropias = listaPlaylistsPropias;
+    }
+
+    public NodoPlaylistSeguida getListaPlaylistsSeguidas() {
+        return listaPlaylistsSeguidas;
+    }
+
+    public void setListaPlaylistsSeguidas(NodoPlaylistSeguida listaPlaylistsSeguidas) {
+        this.listaPlaylistsSeguidas = listaPlaylistsSeguidas;
+    }
+
+    public NodoUsuario getMayores() {
+        return mayores;
+    }
+
+    public void setMayores(NodoUsuario mayores) {
+        this.mayores = mayores;
+    }
+
+    public NodoUsuario getMenores() {
+        return menores;
+    }
+
+    public void setMenores(NodoUsuario menores) {
+        this.menores = menores;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
 

@@ -12,6 +12,8 @@ class ListaAutores {
 
     }
     //crear metodo que retorne nodo de autor
-    public NodoAutor buscarAutor(String nombreAutor) {}
+    public NodoAutor buscarAutor(String nombreAutor) {
+        return null;
+    }
 }
 
