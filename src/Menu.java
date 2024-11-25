@@ -2,13 +2,16 @@ import java.util.*;
 import java.util.regex.*;
 
 public class Menu {
-    public static final String REGEX_VALIDO = "^[A-Za-z0-9]{1,8}$";
+    public static final String REGEX_NOMBRE = "^[A-Za-z0-9]{1,8}$";
+    public static final String REGEX_CANCION = "^[A-Za-z0-9]{1,30}$";
     private Scanner scanner;
     private ArbUsuarios arbUsuarios;
 
-    public Menu(ArbUsuarios arbol) {
+    public Menu(ArbUsuarios arbol, ArbCanciones arbolCanciones, ListaAutores listaAutores) {
         scanner = new Scanner(System.in);
         arbUsuarios = arbol;
+        arbCanciones = arbolCanciones;
+        ListaAutores = listaAutores
     }
 
     public void mostrarMenuPrincipal() {
@@ -38,6 +41,7 @@ public class Menu {
 
     }
 
+
     private void login () {
         System.out.println("Ingrese su usuario");
         String usuario = scanner.nextLine();
@@ -59,14 +63,14 @@ public class Menu {
             System.out.println("Ingrese su usuario");
             String usuario = scanner.nextLine();
             //Valida usuario
-            while (!esValido(usuario)) {
+            while (!validarNombre(usuario)) {
                 System.out.println("Ingrese un nombre de usuario de maximo 8 caracteres");
                 usuario = scanner.nextLine();
             }
             System.out.println("Ingrese su contraseña");
             String contraseña = scanner.nextLine();
             //Valida contraseña
-            while (!esValido(usuario)) {
+            while (!validarNombre(usuario)) {
                 System.out.println("Ingrese una contraseña de usuario de maximo 8 caracteres");
                 contraseña = scanner.nextLine();
             }
@@ -75,9 +79,10 @@ public class Menu {
             mostrarMenuPrincipal();
         }
 
-        private boolean esValido (String texto){
-            Pattern pattern = Pattern.compile(REGEX_VALIDO);
+        private boolean validarNombre (String texto){
+            Pattern pattern = Pattern.compile(REGEX_NOMBRE);
             Matcher matcher = pattern.matcher(texto);
             return matcher.matches();
         }
+
 }
