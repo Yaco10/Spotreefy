@@ -10,7 +10,7 @@ public class Interfaz {
     private ArbolCanciones arbolCanciones;
     private ListaAutores listaAutores;
 
-    public Interfaz(NodoUsuario usuario, ArbolCanciones arbolCanciones, ListaAutores listaAutores) {
+    public Interfaz (NodoUsuario usuario, ArbolCanciones arbolCanciones, ListaAutores listaAutores) {
         this.usuario = usuario;
         this.arbolCanciones = arbolCanciones;
         this.listaAutores = listaAutores;
@@ -20,11 +20,11 @@ public class Interfaz {
 
     public void mostrarInterfaz(NodoUsuario usuario){
         int opcion;
-        System.out.println("Usuario" + usuario.getNombreUsuario());
+        System.out.println("Usuario" + usuario.getNombre());
         System.out.println("Listas Propias");
-        usuario.getListasPropias().MostrarLista();
+        usuario.mostrarPlaylistPropia();
         System.out.println("Listas Seguidas");
-        usuario.getListasSeguidos().MostrarLista();
+        usuario.mostrarPlaylistPropia();
         opcion = scanner.nextInt();
         scanner.nextLine();
 
@@ -39,7 +39,7 @@ public class Interfaz {
                 agregarCancionAListaPorTitulo();
                 break;
             case 4:
-                agregarCancionPorAutor()
+                agregarCancionPorAutor();
                 break;
             case 5:
                 eliminarListaPropia();
@@ -48,7 +48,7 @@ public class Interfaz {
                 seguirLista();
                 break;
             case 7:
-                "Volviendo a menu principal...";
+                System.out.println("Volviendo a menu principal...");
                 break;
             default:
                 System.out.println("Opcion invalida");
@@ -60,40 +60,40 @@ public class Interfaz {
         //ingreso cancion
         System.out.println("Ingrese su Cancion");
         String nombreCancion = scanner.nextLine();
-        while(!validarCancion(nombreCancion)){
+        while(!validarCancion(nombreCancion)){ //valido con regex para cancion
             System.out.println("Ingrese un nombre con menos de 30 caracteres");
             nombreCancion = scanner.nextLine();
         }
-        arbCanciones.insertarCancion(nombreCancion);
+        ArbolCanciones.insertarCancion(nombreCancion);
         //Ingreso autor
         System.out.println("Ingrese el nombre del autor");
-        String autor = scanner.nextLine();
-        while(!validarNombre(autor)){
+        String NombreAutor = scanner.nextLine();
+        while(!validarNombre(NombreAutor)){
             System.out.println("Ingrese un nombre con menos de 8 caracteres");
-            autor = scanner.nextLine();
+            NombreAutor = scanner.nextLine();
         }
-        listaAutores.insertarAutor(autor);
+        listaAutores.insertarAutor(NombreAutor);
     }
 
     private void crearListaPropia () {
         System.out.println("Ingrese el nombre de la playlist");
-        String nombre = scanner.nextLine();
-        while(!validarNombre(nombre)){
+        String nombrePlaylist = scanner.nextLine();
+        while(!validarNombre(nombrePlaylist)){
             System.out.println("Ingrese un nombre de la playlist menor a 8 caracteres");
         }
-        usuario.getListasPropias().insertarPlaylist();
+        usuario.insertarPlaylistPropia(nombrePlaylist);
     }
 
     private void agregarCancionAListaPorTitulo () {
         System.out.println("Ingrese el nombre de la playlist");
         String nombrePlaylist = scanner.nextLine();
-        NodoListaPropia Lista = usuario.getListasPropias.buscarLista(nombrePlaylist)
-        if(Lista != null){
+        NodoPlaylistPropiaLista Playlist = usuario.buscarPlaylistPropia(nombrePlaylist); //obtengo nodo perteneciente a playlist
+        if(Playlist != null){
             System.out.println("Ingrese nombre de la cancion");
             String nombreCancion = scanner.nextLine();
-            NodoCancion Cancion = arbolCanciones.buscarCancion(nombreCancion)
+            NodoCancion Cancion = arbolCanciones.buscarCancion(nombreCancion); //obtengo nodo perteneciente a cancion
             if(Cancion != null){
-               Lista.insertarCancion(Cancion)
+                Playlist.insertarNodoCancion(Cancion); //inserto nodo cancion en la playlist correspondiente
             }
             else{
                 System.out.println("No se encontro el nombre de la cancion");
@@ -107,17 +107,17 @@ public class Interfaz {
     private void agregarCancionPorAutor () {
         System.out.println("Ingrese el nombre de la playlist");
         String nombrePlaylist = scanner.nextLine();
-        NodoListaPropia Lista = usuario.getListasPropias.buscarLista(nombrePlaylist)
+        NodoPlaylistPropiaLista Lista = usuario.buscarPlaylistPropia(nombrePlaylist); //obtengo nodo playlist
         if(Lista != null){
             System.out.println("Ingrese nombre del autor");
             String nombreAutor = scanner.nextLine();
-            NodoAutor autor = listaAutores.buscarAutor(nombreAutor);
+            NodoAutor autor = listaAutores.buscarAutor(nombreAutor); //obtengo nodo autor
             if(autor != null){
                 autor.mostrarCanciones();
                 String nombreCancion = scanner.nextLine();
-                NodoCancion cancion = autor.ListaCanciones.buscarCancion(nombreCancion);
+                NodoCancion cancion = autor.buscarCancion(nombreCancion);
                 if(cancion != null){
-                    Lista.insertarCancion(cancion);
+                    Lista.insertarNodoCancion(cancion);
                 }
                 else{
                     System.out.println("No se encontro el nombre de la cancion");
@@ -132,11 +132,11 @@ public class Interfaz {
         }
     }
 
-    private void eliminarLista () {
+    private void eliminarListaPropia () {
         System.out.println("Ingrese el nombre de la playlist que desea eliminar");
         String nombrePlaylist = scanner.nextLine();
-        if(usuario.getListasPropias().buscarPlaylist(nombrePlaylist)!=null){
-            usuario.getListasPropias().borrarPlaylist(nombrePlaylist);
+        if(usuario.buscarPlaylistPropia(nombrePlaylist)!=null){
+            usuario.borrarPlaylist(nombrePlaylist);
         }
         else{
             System.out.println("No se encontro el nombre de la playlist");
@@ -150,6 +150,12 @@ public class Interfaz {
     //VALIDACIONES
     private boolean validarNombre (String texto){
         Pattern pattern = Pattern.compile(REGEX_NOMBRE);
+        Matcher matcher = pattern.matcher(texto);
+        return matcher.matches();
+    }
+
+    private boolean validarCancion (String texto){
+        Pattern pattern = Pattern.compile(REGEX_CANCION);
         Matcher matcher = pattern.matcher(texto);
         return matcher.matches();
     }

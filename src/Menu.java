@@ -5,12 +5,12 @@ public class Menu {
     public static final String REGEX_NOMBRE = "^[A-Za-z0-9]{1,8}$";
     public static final String REGEX_CANCION = "^[A-Za-z0-9]{1,30}$";
     private Scanner scanner;
-    private ArbUsuarios arbUsuarios;
+    private ArbolUsuarios arbUsuarios;
 
-    public Menu(ArbUsuarios arbol, ArbCanciones arbolCanciones, ListaAutores listaAutores) {
+    public Menu(ArbolUsuarios arbol, ArbolCanciones arbolCanciones, ListaAutores listaAutores) {
         scanner = new Scanner(System.in);
         arbUsuarios = arbol;
-        arbCanciones = arbolCanciones;
+        ArbolCanciones = arbolCanciones;
         ListaAutores = listaAutores
     }
 
@@ -47,16 +47,14 @@ public class Menu {
         String usuario = scanner.nextLine();
         System.out.println("Ingrese contraseña");
         String contraseña = scanner.nextLine();
-        if (arbUsuarios.buscarUsuario(usuario) != null) {
-            while (!(arbUsuarios.buscarUsuario(usuario).getContraseña().equals(contraseña)) || contraseña.equals("0")) {
+        while (arbUsuarios.buscarUsuario(usuario,contraseña) == null) {
                 System.out.println("Contraseña incorrecta Ingrese Nuevamente o Presione 0");
                 contraseña = scanner.nextLine();
-            }
+        }
+        if(contraseña != 0){
             System.out.println("Ingreso correctamente");
         }
-        else{
-                System.out.println("El usuario no existe");
-            }
+
     }
 
         private void nuevoUsuario () {
