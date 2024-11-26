@@ -1,5 +1,6 @@
 // playlist
 // lista de canciones
+
 class NodoPlaylistPropiaLista {
     String nombre; // 
     NodoIndexadoCancion canciones; // (lista sin orden)
@@ -26,6 +27,6 @@ class NodoPlaylistPropiaLista {
     // TO DO
     // Inserción sin orden.
     public void insertarNodoCancion() {
-
+        
     }
 }

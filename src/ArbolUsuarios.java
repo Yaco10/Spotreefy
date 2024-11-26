@@ -1,5 +1,5 @@
 class ArbolUsuarios {
-    NodoUsuario usuarios; // factor de orden: campo 'nombre'
+    NodoUsuario usuarios;
 
     // Constructor innecesario.
     public ArbolUsuarios() {
@@ -26,15 +26,27 @@ class ArbolUsuarios {
         return buscarUsuarioRec(this.usuarios, nombre, contraseña);
     }
 
-    // revisar
     private NodoUsuario buscarUsuarioRec(NodoUsuario actual, String nombre, String contraseña) {
-        if (actual != null && !actual.getNombre().equals(nombre) && !actual.getContraseña().equals(contraseña)) {
-            if (actual.getNombre().compareToIgnoreCase(nombre) > 0) {
-                actual = buscarUsuarioRec(actual.getMenores(), nombre, contraseña);
+        if (actual == null) {
+            return actual;
+        }
+        if (!actual.getNombre().equals(nombre)) {
+            if (actual.getNombre().compareTo(nombre) > 0) {
+                return buscarUsuarioRec(actual.getMenores(), nombre, contraseña);
             } else if (actual.getNombre().compareToIgnoreCase(nombre) < 0) {
-                actual = buscarUsuarioRec(actual.getMayores(), nombre, contraseña);
+                return buscarUsuarioRec(actual.getMayores(), nombre, contraseña);
             }
         }
-        return actual;
+        return actual.getContraseña().equals(contraseña) ? actual : null;
+    }
+
+    public void imprimirOrdenado() {
+        imprimirOrdenadoRec(this.usuarios);    
+    }
+
+    private void imprimirOrdenadoRec(NodoUsuario actual) {
+        imprimirOrdenadoRec(actual.getMenores());
+        System.out.println("* " + actual.getNombre());
+        imprimirOrdenadoRec(actual.getMayores());
     }
 }
