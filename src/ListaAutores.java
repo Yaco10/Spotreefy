@@ -10,15 +10,20 @@ class ListaAutores {
     // Inserción con orden alfabético.
     public void insertarAutor(String nombre) {
         NodoAutor nuevo = new NodoAutor(nombre);
-        NodoAutor anterior = null, actual = this.listaAutores;
-        while (actual != null && actual.getNombre().compareToIgnoreCase(nuevo.getNombre()) < 0) {
-            anterior = actual;
-            actual = actual.getSiguiente();
-        }
-        nuevo.setSiguiente(actual);
-        if (anterior != null) {
-            anterior.setSiguiente(nuevo);
+        if (this.listaAutores == null || nombre.compareToIgnoreCase(this.listaAutores.getNombre()) < 0) {
+            nuevo.setSiguiente(listaAutores);
+            this.listaAutores = nuevo;
         } else {
+            NodoAutor anterior = null, actual = this.listaAutores;
+            while (actual != null && actual.getNombre().compareToIgnoreCase(nuevo.getNombre()) > 0) {
+                anterior = actual;
+                actual = actual.getSiguiente();
+            }
+            if (actual.getNombre().compareToIgnoreCase(nuevo.getNombre()) == 0) {
+                return;
+            }
+            nuevo.setSiguiente(actual);
+            anterior.setSiguiente(nuevo);
             this.listaAutores = nuevo;
         }
     }

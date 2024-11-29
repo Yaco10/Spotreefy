@@ -1,16 +1,16 @@
 // playlist
 // lista de canciones
 
-class NodoPlaylistPropia {
+import java.io.Serializable;
+
+class NodoPlaylistPropia implements Serializable {
     String nombre; // factor de orden
-    NodoIndexadoCancion listaCanciones; // (lista sin orden)
-    // ListaCanciones listaCanciones // ¿?
-    
+    SubListaCanciones sublistaCanciones;// (lista sin orden)
     NodoPlaylistPropia siguiente;
 
     public NodoPlaylistPropia(String nombre) {
         this.nombre = nombre;
-        this.listaCanciones = null; // Innecesario
+        this.sublistaCanciones = new SubListaCanciones(); // Innecesario
         this.siguiente = null; // Innecesario
     }
 
@@ -29,7 +29,7 @@ class NodoPlaylistPropia {
     // TO DO
     // Inserción sin orden.
     
-    public void insertarNodoCancion() {
-        
+    public void insertarNodoCancion(NodoCancion cancion) {
+        sublistaCanciones.insertarCancion(cancion);
     }
 }

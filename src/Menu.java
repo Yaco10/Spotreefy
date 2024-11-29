@@ -60,10 +60,13 @@ public class Menu {
                 }
         }
         if(opcion.equalsIgnoreCase("M")) {
+            System.out.println("Inicio de sesion cancelado, Vovliendo al menu principal...");
+            System.out.println();
             mostrarMenuPrincipal();
         }
         else if(usuario != null) {
             System.out.println("Ingreso correctamente");
+            System.out.println();
             interfaz.setUsuario(usuario);
             interfaz.mostrarInterfaz();
         }
@@ -86,6 +89,7 @@ public class Menu {
             }
             arbUsuarios.insertarUsuario(usuario, contraseña);
             System.out.println("Redirigiendo al Menu de Inicio Sesion");
+            System.out.println();
             mostrarMenuPrincipal();
         }
 

@@ -1,4 +1,7 @@
-class ArbolUsuarios {
+import java.io.Serializable;
+import java.io.*;
+
+class ArbolUsuarios implements Serializable {
     NodoUsuario usuarios;
     public ArbolUsuarios() {
         usuarios = null;
@@ -47,4 +50,17 @@ class ArbolUsuarios {
         System.out.println("* " + actual.getNombre());
         imprimirOrdenadoRec(actual.getMayores());
     }
+
+
+    public void guardarArchivo(String nombreArchivo) {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(nombreArchivo))) {
+            oos.writeObject(this); // Serializamos todo el árbol
+            System.out.println("El árbol se ha guardado correctamente en " + nombreArchivo);
+        } catch (IOException e) {
+            System.out.println("Error al guardar el archivo: " + e.getMessage());
+        }
+    }
+
+
+
 }
