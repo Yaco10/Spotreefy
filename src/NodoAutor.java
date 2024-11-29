@@ -1,6 +1,3 @@
-// autor
-// lista circular
-
 class NodoAutor {
     private String nombre; // factor de orden en ListaAutores
     private NodoCancion listaCanciones; // (lista circular)

@@ -1,15 +1,15 @@
 class NodoPlaylistSeguida {
-    // NodoIndexadoCancion canciones (borrar)
-    String usuario, nombre; // factores de orden (primero usuario, despues playlist)
+    String dueño, nombre;
     NodoPlaylistSeguida siguiente;
 
-    public NodoPlaylistSeguida(String usuario, String nombre) {
-        this.usuario = nombre;
+    public NodoPlaylistSeguida(String dueño, String nombre) {
+        this.dueño = dueño;
         this.nombre = nombre;
+        this.siguiente = null; // Innecesario
     }
 
-    public String getUsuario() {
-        return this.usuario;
+    public String getDueño() {
+        return this.dueño;
     }
 
     public String getNombre() {
@@ -22,9 +22,5 @@ class NodoPlaylistSeguida {
 
     public void setSiguiente(NodoPlaylistSeguida nodo) {
         this.siguiente = nodo;
-    }
-
-    public void insertarNodoCancion() {
-
     }
 }

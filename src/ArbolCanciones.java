@@ -10,6 +10,7 @@ class ArbolCanciones {
         this.canciones = insertarCancionRec(this.canciones, new NodoCancion(titulo));
     }
 
+    // Inserción con orden alfabético.
     private NodoCancion insertarCancionRec(NodoCancion actual, NodoCancion nuevo) {
         if (actual == null) {
             actual = nuevo;
@@ -26,12 +27,11 @@ class ArbolCanciones {
     }
 
     // TO DO
-
     private NodoCancion buscarCancionRec(NodoCancion actual, String titulo) {
         if (actual != null && !actual.getTitulo().equals(titulo)) {
-            if (actual.getTitulo().compareToIgnoreCase(titulo) > 0) {
+            if (actual.getTitulo().compareToIgnoreCase(titulo) < 0) {
                 return buscarCancionRec(actual.getMenores(), titulo);
-            } else if (actual.getTitulo().compareToIgnoreCase(titulo) < 0) {
+            } else if (actual.getTitulo().compareToIgnoreCase(titulo) > 0) {
                 return buscarCancionRec(actual.getMayores(), titulo);
             }
         }

@@ -1,10 +1,14 @@
 class NodoIndexadoCancion {
-    NodoCancion cancion; // conectado a nodos de ArbolCanciones
+    NodoCancion cancion;
     NodoIndexadoCancion siguiente;
 
     public NodoIndexadoCancion(NodoCancion cancion) {
         this.cancion = cancion;
         this.siguiente = null; // Innecesario
+    }
+
+    public NodoCancion getCancion() {
+        return this.cancion;
     }
 
     public NodoIndexadoCancion getSiguiente() {

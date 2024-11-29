@@ -1,21 +1,20 @@
-// playlist
-// lista de canciones
-
 class NodoPlaylistPropia {
-    String nombre; // factor de orden
-    NodoIndexadoCancion listaCanciones; // (lista sin orden)
-    // ListaCanciones listaCanciones // ¿?
-    
+    String nombre;
+    ListaIndexadaCanciones playlist;
     NodoPlaylistPropia siguiente;
 
     public NodoPlaylistPropia(String nombre) {
         this.nombre = nombre;
-        this.listaCanciones = null; // Innecesario
+        this.playlist = new ListaIndexadaCanciones();
         this.siguiente = null; // Innecesario
     }
 
     public String getNombre() {
         return this.nombre;
+    }
+
+    public ListaIndexadaCanciones getPlaylist() {
+        return this.playlist;
     }
 
     public NodoPlaylistPropia getSiguiente() {
@@ -24,12 +23,5 @@ class NodoPlaylistPropia {
 
     public void setSiguiente(NodoPlaylistPropia nodo) {
         this.siguiente = nodo;
-    }
-
-    // TO DO
-    // Inserción sin orden.
-    
-    public void insertarNodoCancion() {
-        
     }
 }
