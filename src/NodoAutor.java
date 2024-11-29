@@ -1,5 +1,6 @@
 // autor
 // lista circular
+
 class NodoAutor {
     private String nombre; // factor de orden en ListaAutores
     private NodoCancion listaCanciones; // (lista circular)
@@ -11,14 +12,35 @@ class NodoAutor {
         this.siguiente = null; // Innecesario
     }
 
-    public void insertarOrdenadoCircular() {
-
+    public String getNombre() {
+        return this.nombre;
     }
 
-    public void mostrarCanciones(){}
+    public NodoAutor getSiguiente() {
+        return this.siguiente;
+    }
 
-    public NodoCancion buscarCancion(String nombre){
-        return null;
+    public void setSiguiente(NodoAutor nodo) {
+        this.siguiente = nodo;
+    }
+
+    // TO DO (NO ES ORDENADO)
+    // public void insertarCancionOrdenadoCircular(NodoCancion nuevo) {
+
+    public void insertarCancionOrdenadoCircular(String titulo) {
+        // NodoCancion actual = listaCanciones;
+
+        NodoCancion nuevo = new NodoCancion(titulo);
+        if (this.listaCanciones != null) {
+            nuevo.setSiguiente(this.listaCanciones);
+            NodoCancion ultimo = this.listaCanciones;
+            while (ultimo.getSiguiente() != this.listaCanciones) {
+                ultimo = ultimo.getSiguiente();
+            }
+            ultimo.setSiguiente(nuevo);
+        } else {
+            nuevo.setSiguiente(nuevo);
+        }
+        this.listaCanciones = nuevo;
     }
 }
-

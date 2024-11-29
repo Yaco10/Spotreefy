@@ -2,18 +2,34 @@
 class ListaAutores {
     NodoAutor listaAutores; // (lista ordenada)
 
-    // Constructor innecesario
+    // Constructor innecesario.
     public ListaAutores() {
         this.listaAutores = null;
     }
 
-    //crear metodo que inserte autor ordenado
-    public void insertarAutor(String nombreAutor) {
-
+    // Inserción con orden alfabético.
+    public void insertarAutor(String nombre) {
+        NodoAutor nuevo = new NodoAutor(nombre);
+        NodoAutor anterior = null, actual = this.listaAutores;
+        while (actual != null && actual.getNombre().compareToIgnoreCase(nuevo.getNombre()) < 0) {
+            anterior = actual;
+            actual = actual.getSiguiente();
+        }
+        nuevo.setSiguiente(actual);
+        if (anterior != null) {
+            anterior.setSiguiente(nuevo);
+        } else {
+            this.listaAutores = nuevo;
+        }
     }
-    //crear metodo que retorne nodo de autor
-    public NodoAutor buscarAutor(String nombreAutor) {
-        return null;
+
+    // TO DO
+
+    public NodoAutor buscarAutor(String nombre) {
+        NodoAutor autor = this.listaAutores;
+        while (autor != null && !autor.getNombre().equals(nombre)) {
+            autor = autor.getSiguiente();
+        }
+        return autor;
     }
 }
-
