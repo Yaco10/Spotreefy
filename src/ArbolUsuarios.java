@@ -22,6 +22,7 @@ class ArbolUsuarios {
     }
 
     // ¿boolean?
+    
     public NodoUsuario buscarUsuario(String nombre, String contraseña) {
         return buscarUsuarioRec(this.usuarios, nombre, contraseña);
     }

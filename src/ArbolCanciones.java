@@ -20,4 +20,21 @@ class ArbolCanciones {
         }
         return actual;
     }
+
+    public NodoCancion buscarCancion(String titulo) {
+        return buscarCancionRec(this.canciones, titulo);
+    }
+
+    // TO DO
+
+    private NodoCancion buscarCancionRec(NodoCancion actual, String titulo) {
+        if (actual != null && !actual.getTitulo().equals(titulo)) {
+            if (actual.getTitulo().compareToIgnoreCase(titulo) > 0) {
+                return buscarCancionRec(actual.getMenores(), titulo);
+            } else if (actual.getTitulo().compareToIgnoreCase(titulo) < 0) {
+                return buscarCancionRec(actual.getMayores(), titulo);
+            }
+        }
+        return actual;
+    }
 }

@@ -1,4 +1,5 @@
 // lista
+
 class ListaAutores {
     NodoAutor listaAutores; // (lista ordenada)
 
@@ -8,7 +9,7 @@ class ListaAutores {
     }
 
     // Inserción con orden alfabético.
-    public void insertarAutorOrdenado(String nombre) {
+    public void insertarAutor(String nombre) {
         NodoAutor nuevo = new NodoAutor(nombre);
         NodoAutor anterior = null, actual = this.listaAutores;
         while (actual != null && actual.getNombre().compareToIgnoreCase(nuevo.getNombre()) < 0) {
@@ -21,5 +22,15 @@ class ListaAutores {
         } else {
             this.listaAutores = nuevo;
         }
-    }  
+    }
+    
+    // TO DO
+
+    public NodoAutor buscarAutor(String nombre) {
+        NodoAutor autor = this.listaAutores;
+        while (autor != null && !autor.getNombre().equals(nombre)) {
+            autor = autor.getSiguiente();
+        }
+        return autor;
+    }
 }

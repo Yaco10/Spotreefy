@@ -1,0 +1,3 @@
+class ListaPlaylistsSeguidas {
+    NodoPlaylistSeguida listaPlaylistsSeguidas;
+}

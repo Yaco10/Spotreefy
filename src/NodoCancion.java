@@ -5,6 +5,7 @@ class NodoCancion {
     NodoCancion siguiente; // siguiente cancion de NodoAutor
 
     // ¿agregar campos?
+    
     public NodoCancion(String titulo) {
         this.titulo = titulo;
         this.menores = null; // Innecesario
