@@ -25,9 +25,6 @@ class NodoAutor {
     }
 
     public ListaCircular getListaCanciones() {
-        if (this.listaCanciones == null) {
-            this.listaCanciones = new ListaCircular();
-        }
         return this.listaCanciones;
     }
 

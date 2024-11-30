@@ -17,10 +17,12 @@ public class Interfaz {
         this.arbolCanciones = arbolCanciones;
         this.listaAutores = listaAutores;
         scanner = new Scanner(System.in);
+
     }
 
 
     public void mostrarInterfaz(){
+        usuario.getPlaylistsPropias().cargarLista("ArchListaPropia",arbolCanciones);
         int opcion;
         System.out.println("Usuario" + usuario.getNombre());
         System.out.println("Listas Propias");
@@ -59,11 +61,12 @@ public class Interfaz {
                 break;
             case 7:
                 System.out.println("Volviendo a menu principal...");
+                usuario.getPlaylistsPropias().guardarLista("ArchListaPropia");
                 break;
             default:
                 System.out.println("Opcion invalida");
-
         }
+
     }
 
     private void agregarCancion () {

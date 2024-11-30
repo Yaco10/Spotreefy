@@ -1,7 +1,7 @@
 // playlist
 // lista de canciones
 
-import java.io.Serializable;
+import java.io.*;
 
 class NodoPlaylistPropia implements Serializable {
     String nombre; // factor de orden
@@ -32,4 +32,14 @@ class NodoPlaylistPropia implements Serializable {
     public void insertarNodoCancion(NodoCancion cancion) {
         sublistaCanciones.insertarCancion(cancion);
     }
+
+    public SubListaCanciones getSublistaCanciones() {
+        return sublistaCanciones;
+    }
+
+    public void setSublistaCanciones(SubListaCanciones sublistaCanciones) {
+        this.sublistaCanciones = sublistaCanciones;
+    }
 }
+
+

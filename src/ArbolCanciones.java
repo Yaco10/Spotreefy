@@ -1,3 +1,7 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+
 class ArbolCanciones {
     NodoCancion canciones;
 
@@ -36,5 +40,23 @@ class ArbolCanciones {
             }
         }
         return actual;
+    }
+
+    //Archivos
+
+    public void cargarArchivo(String nombreArchivo) {
+        try (BufferedReader br = new BufferedReader(new FileReader(nombreArchivo))) {
+            String linea;
+            while ((linea = br.readLine()) != null) {
+                // Separar el título de la canción y el nombre del autor
+                String[] partes = linea.split(" - ");
+                if (partes.length == 2) {
+                    String tituloCancion = partes[0].trim();
+                    insertarCancion(tituloCancion);
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Error al leer el archivo: " + e.getMessage());
+        }
     }
 }

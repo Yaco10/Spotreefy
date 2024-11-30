@@ -1,11 +1,14 @@
 public class Main {
     public static void main(String[] args) {
-        ArbolUsuarios arbUs = ArbolUsuarios.cargarArchivo("pepe");
+        ArbolUsuarios arbUs = new ArbolUsuarios();
         ArbolCanciones arbolcanciones = new ArbolCanciones();
         ListaAutores listaAutores = new ListaAutores();
+        arbolcanciones.cargarArchivo("ArchCanciones");
+        listaAutores.cargarArchivo("ArchCanciones",arbolcanciones);
         Menu menu = new Menu(arbUs, arbolcanciones, listaAutores);
         menu.mostrarMenuPrincipal();
-        arbUs.guardarArchivo("pepe");
+        arbUs.guardarArbol("archUsuarios");
+        listaAutores.guardarArchivo("ArchCanciones");
 
 
     }

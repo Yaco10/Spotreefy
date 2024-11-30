@@ -1,10 +1,11 @@
-import java.io.Serializable;
+
 import java.io.*;
 
-class ArbolUsuarios implements Serializable {
+class ArbolUsuarios {
     NodoUsuario usuarios;
     public ArbolUsuarios() {
         usuarios = null;
+        cargarArbol("archUsuarios");
     }
 
     public void insertarUsuario(String nombre, String contraseña) {
@@ -51,16 +52,57 @@ class ArbolUsuarios implements Serializable {
         imprimirOrdenadoRec(actual.getMayores());
     }
 
+    // Guardar el árbol en un archivo, creando el archivo si no existe
+    public void guardarArbol(String nombreArchivo) {
+        File archivo = new File(nombreArchivo);
+        try {
+            if (!archivo.exists()) {
+                // Crear el archivo si no existe
+                archivo.createNewFile();
+                System.out.println("Archivo creado: " + archivo.getAbsolutePath());
+            }
 
-    public void guardarArchivo(String nombreArchivo) {
-        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(nombreArchivo))) {
-            oos.writeObject(this); // Serializamos todo el árbol
-            System.out.println("El árbol se ha guardado correctamente en " + nombreArchivo);
+            // Escribir en el archivo
+            try (BufferedWriter bw = new BufferedWriter(new FileWriter(archivo))) {
+                guardarArbolPreorden(bw, usuarios);
+            }
+            } catch (IOException e) {
+                System.err.println("Error al guardar el archivo: " + e.getMessage());
+            }
+        }
+
+
+    // Recorrido preorden para guardar los nodos
+        private void guardarArbolPreorden(BufferedWriter bw, NodoUsuario nodo) throws IOException {
+            if (nodo == null) return;
+
+            // Escribe el nombre y la contraseña separados por un espacio
+            bw.write(nodo.getNombre() + " " + nodo.getContraseña());
+            bw.newLine();
+
+            // Llama recursivamente para las subramas
+            guardarArbolPreorden(bw, nodo.getMenores());
+            guardarArbolPreorden(bw, nodo.getMayores());
+        }
+
+    public void cargarArbol(String nombreArchivo) {
+        try (BufferedReader br = new BufferedReader(new FileReader(nombreArchivo))) {
+            String linea;
+            while ((linea = br.readLine()) != null) {
+                String[] datos = linea.split(" ");
+                if (datos.length == 2) {
+                    String nombre = datos[0];
+                    String password = datos[1];
+                    insertarUsuario(nombre,password);
+                }
+            }
         } catch (IOException e) {
-            System.out.println("Error al guardar el archivo: " + e.getMessage());
+            System.err.println("Error al cargar el archivo: " + e.getMessage());
         }
     }
-
-
-
 }
+
+
+
+
+
