@@ -28,7 +28,7 @@ class ArbolUsuarios {
 
     private NodoUsuario buscarUsuarioRec(NodoUsuario actual, String nombre, String contraseña) {
         if (actual != null) {
-            if (actual.getNombre().equals(nombre) && actual.getContraseña().equals(contraseña)) {
+            if (actual.getNombre().equalsIgnoreCase(nombre) && actual.getContraseña().equals(contraseña)) {
                 return actual;
             } else if (actual.getNombre().compareToIgnoreCase(nombre) < 0) {
                 return buscarUsuarioRec(actual.getMayores(), nombre, contraseña);

@@ -14,17 +14,17 @@ class ListaPlaylistsPropias {
             anterior = actual;
             actual = actual.getSiguiente();
         }
+        nueva.setSiguiente(actual);
         if (anterior == null) {
             this.listaPlaylistsPropias = nueva;
         } else {
-            nueva.setSiguiente(actual);
             anterior.setSiguiente(nueva);
         }
     }
 
     public NodoPlaylistPropia buscarPlaylist(String nombre) {
         NodoPlaylistPropia playlist = this.listaPlaylistsPropias;
-        while (playlist != null && !playlist.getNombre().equals(nombre)) {
+        while (playlist != null && !playlist.getNombre().equalsIgnoreCase(nombre)) {
             playlist = playlist.getSiguiente();
         }
         return playlist;
@@ -32,11 +32,11 @@ class ListaPlaylistsPropias {
 
     public void eliminarPlaylist(String nombre) {
         if (this.listaPlaylistsPropias != null ) {
-            if (this.listaPlaylistsPropias.getNombre().equals(nombre)) {
+            if (this.listaPlaylistsPropias.getNombre().equalsIgnoreCase(nombre)) {
                 this.listaPlaylistsPropias = this.listaPlaylistsPropias.getSiguiente();
             } else {
                 NodoPlaylistPropia anterior = null, actual = this.listaPlaylistsPropias;
-                while (actual != null && !actual.getNombre().equals(nombre)) {
+                while (actual != null && !actual.getNombre().equalsIgnoreCase(nombre)) {
                     anterior = actual;
                     actual = actual.getSiguiente();
                 }

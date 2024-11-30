@@ -1,11 +1,8 @@
 class NodoCancion {
-    String titulo; // factor de orden en ArbolCanciones
-    // String autor ¿?
+    String titulo;
     NodoCancion mayores, menores;
-    NodoCancion siguiente; // siguiente cancion de NodoAutor
+    NodoCancion siguiente;
 
-    // ¿agregar campos?
-    
     public NodoCancion(String titulo) {
         this.titulo = titulo;
         this.menores = null; // Innecesario
@@ -41,4 +38,3 @@ class NodoCancion {
         this.siguiente = nodo;
     }
 }
-

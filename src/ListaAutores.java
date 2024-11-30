@@ -14,16 +14,15 @@ class ListaAutores {
             anterior = actual;
             actual = actual.getSiguiente();
         }
+        nuevo.setSiguiente(actual);
         if (anterior == null) {
             this.listaAutores = nuevo;
         } else {
-            nuevo.setSiguiente(actual);
             anterior.setSiguiente(nuevo);
         }
     }
     
-    // TO DO
-
+    // TO DO ?
     public NodoAutor buscarAutor(String nombre) {
         NodoAutor autor = this.listaAutores;
         while (autor != null && !autor.getNombre().equals(nombre)) {
