@@ -10,7 +10,6 @@ class ListaPlaylistsSeguidas {
     public void insertarPlaylist(String dueño, String nombre) {
         NodoPlaylistSeguida nueva = new NodoPlaylistSeguida(dueño, nombre);
         NodoPlaylistSeguida anterior = null, actual = this.listaPlaylistsSeguidas;
-        // ¿temporal?
         while (actual != null && (actual.getDueño().compareToIgnoreCase(dueño) < 0 ||
         (actual.getDueño().equalsIgnoreCase(dueño) && actual.getNombre().compareToIgnoreCase(nombre) < 0))) {
             anterior = actual;
@@ -32,10 +31,10 @@ class ListaPlaylistsSeguidas {
         return playlist != null;
     }
 
-    public void mostrarPlaylists() {
+    public void mostrar() {
         NodoPlaylistSeguida playlist = this.listaPlaylistsSeguidas;
         while (playlist != null) {
-            System.out.println("*" + playlist.getNombre() + ", de " + playlist.getDueño());
+            System.out.println("* " + playlist.getNombre() + ", de " + playlist.getDueño());
             playlist = playlist.getSiguiente();
         }
     }

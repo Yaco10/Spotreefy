@@ -27,7 +27,7 @@ class ArbolCanciones {
     }
 
     private NodoCancion buscarCancionRec(NodoCancion actual, String titulo) {
-        if (actual != null && !actual.getTitulo().equals(titulo)) {
+        if (actual != null && !actual.getTitulo().equalsIgnoreCase(titulo)) {
             if (actual.getTitulo().compareToIgnoreCase(titulo) < 0) {
                 return buscarCancionRec(actual.getMenores(), titulo);
             } else if (actual.getTitulo().compareToIgnoreCase(titulo) > 0) {

@@ -45,10 +45,10 @@ class ListaPlaylistsPropias {
         }
     }
 
-    public void mostrarPlaylists() {
+    public void mostrar() {
         NodoPlaylistPropia playlist = this.listaPlaylistsPropias;
         while (playlist != null) {
-            System.out.println("*" + playlist.getNombre());
+            System.out.println("* " + playlist.getNombre());
             playlist = playlist.getSiguiente();
         }
     }

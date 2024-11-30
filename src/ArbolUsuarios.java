@@ -39,15 +39,15 @@ class ArbolUsuarios {
         return null;
     }
 
-    public void imprimir() {
-        imprimirOrdenadoRec(this.usuarios);    
+    public void mostrar() {
+        mostrarOrdenadoRec(this.usuarios);    
     }
 
-    private void imprimirOrdenadoRec(NodoUsuario actual) {
+    private void mostrarOrdenadoRec(NodoUsuario actual) {
         if (actual != null) {
-            imprimirOrdenadoRec(actual.getMenores());
+            mostrarOrdenadoRec(actual.getMenores());
             System.out.println("* " + actual.getNombre());
-            imprimirOrdenadoRec(actual.getMayores());
+            mostrarOrdenadoRec(actual.getMayores());
         }
     }
 }
