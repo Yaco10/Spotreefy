@@ -1,5 +1,5 @@
 class ListaIndexadaCanciones {
-    NodoIndexadoCancion listaCanciones;
+    private NodoIndexadoCancion listaCanciones;
 
     // Constructor innecesario.
     public ListaIndexadaCanciones() {

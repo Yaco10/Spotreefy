@@ -1,6 +1,6 @@
 class NodoIndexadoCancion {
-    NodoCancion cancion;
-    NodoIndexadoCancion siguiente;
+    private NodoCancion cancion;
+    private NodoIndexadoCancion siguiente;
 
     public NodoIndexadoCancion(NodoCancion cancion) {
         this.cancion = cancion;

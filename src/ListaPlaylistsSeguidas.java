@@ -1,5 +1,5 @@
 class ListaPlaylistsSeguidas {
-    NodoPlaylistSeguida listaPlaylistsSeguidas;
+    private NodoPlaylistSeguida listaPlaylistsSeguidas;
 
     // Constructor innecesario,
     public ListaPlaylistsSeguidas() {

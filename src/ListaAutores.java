@@ -1,5 +1,5 @@
 class ListaAutores {
-    NodoAutor listaAutores;
+    private NodoAutor listaAutores;
 
     // Constructor innecesario.
     public ListaAutores() {
@@ -29,5 +29,13 @@ class ListaAutores {
             autor = autor.getSiguiente();
         }
         return autor;
+    }
+
+    // TO DO
+    public void cargarArchivo(String string, ArbolCanciones canciones) {
+    }
+
+    // TO DO    
+    public void guardarArchivo(String string) {
     }
 }

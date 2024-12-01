@@ -1,6 +1,6 @@
 class NodoPlaylistSeguida {
-    String dueño, nombre;
-    NodoPlaylistSeguida siguiente;
+    private String dueño, nombre;
+    private NodoPlaylistSeguida siguiente;
 
     public NodoPlaylistSeguida(String dueño, String nombre) {
         this.dueño = dueño;

@@ -1,5 +1,5 @@
 class ListaPlaylistsPropias {
-    NodoPlaylistPropia listaPlaylistsPropias;
+    private NodoPlaylistPropia listaPlaylistsPropias;
 
     // Constructor innecesario.
     public ListaPlaylistsPropias() {
@@ -51,5 +51,10 @@ class ListaPlaylistsPropias {
             System.out.println("* " + playlist.getNombre());
             playlist = playlist.getSiguiente();
         }
+    }
+
+    // TO DO
+    public void cargarLista(String string, ArbolCanciones arbolCanciones) {
+
     }
 }

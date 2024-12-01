@@ -1,7 +1,7 @@
 class NodoPlaylistPropia {
-    String nombre;
-    ListaIndexadaCanciones playlist;
-    NodoPlaylistPropia siguiente;
+    private String nombre;
+    private ListaIndexadaCanciones playlist;
+    private NodoPlaylistPropia siguiente;
 
     public NodoPlaylistPropia(String nombre) {
         this.nombre = nombre;

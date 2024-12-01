@@ -1,13 +1,15 @@
 class ArbolCanciones {
-    NodoCancion canciones;
+    private NodoCancion canciones;
 
      // Constructor innecesario.
     public ArbolCanciones() {
         this.canciones = null;
     }
 
-    public void insertarCancion(String titulo) {
-        this.canciones = insertarCancionRec(this.canciones, new NodoCancion(titulo));
+    public NodoCancion insertarCancion(String titulo) {
+        NodoCancion cancion = new NodoCancion(titulo);
+        this.canciones = insertarCancionRec(this.canciones, cancion);
+        return cancion;
     }
 
     // Inserción con orden alfabético.
@@ -35,5 +37,10 @@ class ArbolCanciones {
             }
         }
         return actual;
+    }
+
+    // TO DO
+    public void cargarArchivo(String string) {
+
     }
 }

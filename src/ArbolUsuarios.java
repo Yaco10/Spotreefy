@@ -1,5 +1,5 @@
 class ArbolUsuarios {
-    NodoUsuario usuarios;
+    private NodoUsuario usuarios;
 
     // Constructor innecesario.
     public ArbolUsuarios() {
@@ -50,4 +50,14 @@ class ArbolUsuarios {
             mostrarOrdenadoRec(actual.getMayores());
         }
     }
+
+    /*
+    // TO DO
+    public void cargarArchivo(String string) {
+    }
+
+    // TO DO
+    public void guardarArbol(String string) {
+    }
+    */
 }

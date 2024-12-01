@@ -1,8 +1,8 @@
 class NodoUsuario {
-    String nombre, contraseña;
-    ListaPlaylistsPropias playlistsPropias;
-    ListaPlaylistsSeguidas playlistsSeguidas;
-    NodoUsuario menores, mayores;
+    private String nombre, contraseña;
+    private ListaPlaylistsPropias playlistsPropias;
+    private ListaPlaylistsSeguidas playlistsSeguidas;
+    private NodoUsuario menores, mayores;
 
     public NodoUsuario(String nombre, String contraseña) {
         this.nombre = nombre;

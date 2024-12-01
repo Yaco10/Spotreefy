@@ -1,7 +1,7 @@
 class NodoCancion {
-    String titulo;
-    NodoCancion mayores, menores;
-    NodoCancion siguiente;
+    private String titulo;
+    private NodoCancion mayores, menores;
+    private NodoCancion siguiente;
 
     public NodoCancion(String titulo) {
         this.titulo = titulo;
