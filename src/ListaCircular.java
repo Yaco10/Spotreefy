@@ -1,5 +1,6 @@
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 
 public class ListaCircular {
     NodoCancion listaCanciones;
@@ -63,15 +64,15 @@ public class ListaCircular {
         return null;
     }
 
-    public void guardarCanciones(BufferedWriter bw, String nombreAutor) throws IOException {
+    public void guardarCanciones(String nombreAutor, ObjectOutputStream out) throws IOException {
         NodoCancion actual = this.listaCanciones;
-        bw.write(actual.getTitulo() + " - " + nombreAutor);
-        bw.newLine();
-        actual = actual.getSiguiente();
-        while (actual.getSiguiente() != listaCanciones) {
-            bw.write(actual.getTitulo() + " - " + nombreAutor);
-            bw.newLine();
-            actual = actual.getSiguiente();
+        if (actual != null) {
+            do {
+                ArchCanciones registro = new ArchCanciones(actual.getTitulo(), nombreAutor);
+                out.writeObject(registro);
+                actual = actual.getSiguiente();
+            } while (actual != listaCanciones); // Asegúrate de recorrer toda la lista circular
         }
     }
+
 }

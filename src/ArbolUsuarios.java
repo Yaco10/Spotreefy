@@ -5,7 +5,7 @@ class ArbolUsuarios {
     NodoUsuario usuarios;
     public ArbolUsuarios() {
         usuarios = null;
-        cargarArbol("archUsuarios");
+        cargarUsuarios("archUsuarios");
     }
 
     public void insertarUsuario(String nombre, String contraseña) {
@@ -23,19 +23,19 @@ class ArbolUsuarios {
         return actual;
     }
 
-    public NodoUsuario buscarUsuario(String nombre, String contraseña) {
-        return buscarUsuarioRecursivo(usuarios, nombre, contraseña);
+    public NodoUsuario buscarUsuario(String nombre) {
+        return buscarUsuarioRecursivo(usuarios, nombre);
         // ¿boolean?
     }
 
-    private NodoUsuario buscarUsuarioRecursivo(NodoUsuario actual, String nombre, String contraseña){
+    private NodoUsuario buscarUsuarioRecursivo(NodoUsuario actual, String nombre){
         if(actual != null){
-            if(actual.getNombre().equals(nombre) && actual.getContraseña().equals(contraseña)){
+            if(actual.getNombre().equals(nombre)){
                 return actual;
             } else if (actual.getNombre().compareTo(nombre) < 0) {
-                return buscarUsuarioRecursivo(actual.getMayores(),nombre,contraseña);
+                return buscarUsuarioRecursivo(actual.getMayores(),nombre);
             } else if (actual.getNombre().compareTo(nombre) > 0) {
-                return buscarUsuarioRecursivo(actual.getMenores(),nombre,contraseña);
+                return buscarUsuarioRecursivo(actual.getMenores(),nombre);
             }
         }
         return null;
@@ -52,54 +52,149 @@ class ArbolUsuarios {
         imprimirOrdenadoRec(actual.getMayores());
     }
 
-    // Guardar el árbol en un archivo, creando el archivo si no existe
-    public void guardarArbol(String nombreArchivo) {
-        File archivo = new File(nombreArchivo);
-        try {
-            if (!archivo.exists()) {
-                // Crear el archivo si no existe
-                archivo.createNewFile();
-                System.out.println("Archivo creado: " + archivo.getAbsolutePath());
-            }
+    //Archivos
 
-            // Escribir en el archivo
-            try (BufferedWriter bw = new BufferedWriter(new FileWriter(archivo))) {
-                guardarArbolPreorden(bw, usuarios);
-            }
-            } catch (IOException e) {
-                System.err.println("Error al guardar el archivo: " + e.getMessage());
-            }
-        }
-
-
-    // Recorrido preorden para guardar los nodos
-        private void guardarArbolPreorden(BufferedWriter bw, NodoUsuario nodo) throws IOException {
-            if (nodo == null) return;
-
-            // Escribe el nombre y la contraseña separados por un espacio
-            bw.write(nodo.getNombre() + " " + nodo.getContraseña());
-            bw.newLine();
-
-            // Llama recursivamente para las subramas
-            guardarArbolPreorden(bw, nodo.getMenores());
-            guardarArbolPreorden(bw, nodo.getMayores());
-        }
-
-    public void cargarArbol(String nombreArchivo) {
-        try (BufferedReader br = new BufferedReader(new FileReader(nombreArchivo))) {
-            String linea;
-            while ((linea = br.readLine()) != null) {
-                String[] datos = linea.split(" ");
-                if (datos.length == 2) {
-                    String nombre = datos[0];
-                    String password = datos[1];
-                    insertarUsuario(nombre,password);
-                }
-            }
+    public void guardarEnArchivo(String archivo) {
+        try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(archivo))) {
+            guardarEnArchivoRec(usuarios, out);
         } catch (IOException e) {
-            System.err.println("Error al cargar el archivo: " + e.getMessage());
+            e.printStackTrace();
         }
     }
+
+    private void guardarEnArchivoRec(NodoUsuario actual, ObjectOutputStream out) throws IOException {
+        if (actual != null) {
+            out.writeObject(actual);
+            guardarEnArchivoRec(actual.getMenores(), out);
+            guardarEnArchivoRec(actual.getMayores(), out);
+        }
+    }
+
+    public void cargarUsuarios(String archivo) {
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(archivo))) {
+            NodoUsuario actual;
+
+            while ((actual = (NodoUsuario) ois.readObject()) != null) {
+                insertarUsuario(actual.getNombre(), actual.getContraseña());
+            }
+
+        } catch (FileNotFoundException e) {
+            System.out.println("Archivo no encontrado. Creando archivo nuevo.");
+            try (BufferedWriter bw = new BufferedWriter(new FileWriter(archivo))) {
+            } catch (IOException exc) {
+                exc.printStackTrace();
+            }
+        } catch (EOFException e) {
+            System.out.println("Usuarios cargados correctamente.");
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void guardarEnArchivoPlaylist(String archivo) {
+        try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(archivo))) {
+            guardarEnArchivoPlaylistRec(usuarios, out);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void guardarEnArchivoPlaylistRec(NodoUsuario actual, ObjectOutputStream out) throws IOException {
+        if (actual != null) {
+            actual.getPlaylistsPropias().guardarEnArchivoPlaylist(actual.getNombre(), out);
+            guardarEnArchivoPlaylistRec(actual.getMenores(), out);
+            guardarEnArchivoPlaylistRec(actual.getMayores(), out);
+        }
+    }
+
+    public void cargarArchivoPlaylist(String archivo) {
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(archivo))) {
+            Object obj;
+
+            while (true) {
+                try {
+                    obj = ois.readObject();
+                    if (obj instanceof ArchListasPropias) {
+                        ArchListasPropias actual = (ArchListasPropias) obj;
+                        NodoUsuario user = buscarUsuario(actual.getNombreUsuario());
+                        if (user != null) {
+                            user.getPlaylistsPropias().insertarPlaylist(actual.getNombrePlaylist());
+                            NodoPlaylistPropia playlistPropia = user.getPlaylistsPropias().buscarPlaylist(actual.getNombrePlaylist());
+                            playlistPropia.insertarNodoCancion(actual.getCancion());
+                        }
+                    } else {
+                        System.out.println("Objeto en archivo no es de tipo ArchListasPropias.");
+                    }
+                } catch (EOFException e) {
+                    // Correctamente maneja el fin del archivo
+                    System.out.println("Listas Propias cargadas correctamente.");
+                    break;
+                }
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println("Archivo Listas Propias no encontrado, Creando archivo nuevo.");
+            try (BufferedWriter bw = new BufferedWriter(new FileWriter(archivo))) {
+                // Archivo nuevo
+            } catch (IOException exc) {
+                exc.printStackTrace();
+            }
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+    //ARCHIVOS LISTAS SEGUIDAS
+
+    public void guardarArchivoPlaylistSeguida(String archivo) {
+        try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(archivo))) {
+            guardarArchivoPlaylistSeguidaRec(usuarios, out);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void guardarArchivoPlaylistSeguidaRec(NodoUsuario actual, ObjectOutputStream out) throws IOException {
+        if (actual != null) {
+            actual.getPlaylistsSeguidas().guardarPlaylistEnArchivo(actual.getNombre(),out);
+            guardarArchivoPlaylistSeguidaRec(actual.getMenores(), out);
+            guardarArchivoPlaylistSeguidaRec(actual.getMayores(), out);
+        }
+    }
+
+    public void cargarArchivoPlaylistSeguida(String archivo) {
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(archivo))) {
+            Object obj;
+
+            while (true) {
+                try {
+                    obj = ois.readObject();
+                    if (obj instanceof ArchListaSeguida) {
+                        ArchListaSeguida actual = (ArchListaSeguida) obj;
+                        NodoUsuario user = buscarUsuario(actual.getNombreUser());
+                        if (user != null) {
+                            user.getPlaylistsSeguidas().insertarPlaylist(actual.getNombreUserSeguido(), actual.getNombrePlaylist());
+                        }
+                    } else {
+                        System.out.println("Objeto en archivo no es de tipo ArchListasPropias.");
+                    }
+                } catch (EOFException e) {
+                    // Correctamente maneja el fin del archivo
+                    System.out.println("Listas Propias cargadas correctamente.");
+                    break;
+                }
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println("Archivo Listas Propias no encontrado, Creando archivo nuevo.");
+            try (BufferedWriter bw = new BufferedWriter(new FileWriter(archivo))) {
+                // Archivo nuevo
+            } catch (IOException exc) {
+                exc.printStackTrace();
+            }
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 }
 
 

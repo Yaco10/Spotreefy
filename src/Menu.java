@@ -46,18 +46,27 @@ public class Menu {
 
     private void login () {
         String nombreUsuario;
-        String contraseña;
+        String contraseña = "";
         String opcion = "";
-        while (usuario == null && !"M".equalsIgnoreCase(opcion)) {
+
+        while (usuario == null || !contraseña.equals(usuario.getContraseña())) {
                 System.out.println("Ingrese su usuario");
                 nombreUsuario = scanner.nextLine();
                 System.out.println("Ingrese contraseña");
                 contraseña = scanner.nextLine();
-                usuario = arbUsuarios.buscarUsuario(nombreUsuario,contraseña);
-                if (usuario == null) {
-                    System.out.println("Usuario no encontrado, presione enter para volver a intentar o M para volver al menu");
-                    opcion = scanner.nextLine();
-                }
+                usuario = arbUsuarios.buscarUsuario(nombreUsuario);
+                    if (usuario == null) {
+                        System.out.println("Usuario no encontrado, presione enter para volver a intentar o M para volver al menu o M para volver al menu");
+                        opcion = scanner.nextLine();
+                    }
+                    else if(usuario != null && !contraseña.equals(usuario.getContraseña())){
+                        System.out.println("Contraseña incorrecta, presione enter para volver a intentar o M para volver al menu o M para volver al menu" );
+                        opcion = scanner.nextLine();
+                    }
+                     if(opcion.equalsIgnoreCase("m")){
+                         return;
+                     }
+
         }
         if(opcion.equalsIgnoreCase("M")) {
             System.out.println("Inicio de sesion cancelado, Vovliendo al menu principal...");
@@ -67,7 +76,7 @@ public class Menu {
         else if(usuario != null) {
             System.out.println("Ingreso correctamente");
             System.out.println();
-            interfaz.setUsuario(usuario);
+            interfaz.inicializarUsuario(usuario);
             interfaz.mostrarInterfaz();
         }
     }

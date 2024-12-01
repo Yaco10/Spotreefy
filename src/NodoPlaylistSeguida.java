@@ -1,6 +1,7 @@
 class NodoPlaylistSeguida {
     // NodoIndexadoCancion canciones (borrar)
-    String usuario, nombre; // factores de orden (primero usuario, despues playlist)
+    String nombre;
+    String usuario;
     NodoPlaylistSeguida siguiente;
 
     public NodoPlaylistSeguida(String usuario, String nombre) {

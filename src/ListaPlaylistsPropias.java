@@ -1,6 +1,6 @@
 import java.io.*;
 
-class ListaPlaylistsPropias  {
+class ListaPlaylistsPropias {
     NodoPlaylistPropia listaPlaylistPropias;
 
     public ListaPlaylistsPropias() {
@@ -67,63 +67,16 @@ class ListaPlaylistsPropias  {
         System.out.println();
     }
 
-    public void guardarLista(String nombreArchivo) {
-        File archivo = new File(nombreArchivo);
-        try {
-            if (!archivo.exists()) {
-                // Crear el archivo si no existe
-                archivo.createNewFile();
-                System.out.println("Archivo creado: " + archivo.getAbsolutePath());
-            }
+    //ARCHIVOS
 
-            // Escribir en el archivo
-            try (BufferedWriter bw = new BufferedWriter(new FileWriter(archivo))) {
-                NodoPlaylistPropia actual = listaPlaylistPropias;
-                while (actual != null) {
-                    bw.write("Playlist: " + actual.getNombre());
-                    bw.newLine();
-                    actual.getSublistaCanciones().guardarCanciones(bw);
-                    bw.newLine();
-                    actual = actual.getSiguiente();
-                }
-        } catch (IOException e) {
-            System.err.println("Error al guardar el archivo: " + e.getMessage());
-        }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-    }
-
-    public void cargarLista(String nombreArchivo, ArbolCanciones arbolCanciones) {
-        try (BufferedReader br = new BufferedReader(new FileReader(nombreArchivo))) {
-            String linea;
-            NodoPlaylistPropia playlistActual = null;
-
-            while ((linea = br.readLine()) != null) {
-                linea = linea.trim();
-
-                if (linea.startsWith("Playlist:")) {
-                    // Crear una nueva playlist
-                    String nombrePlaylist = linea.substring("Playlist:".length()).trim();
-                    insertarPlaylist(nombrePlaylist);
-                    playlistActual = buscarPlaylist(nombrePlaylist); // Obtener la referencia a la nueva playlist
-                } else if (linea.startsWith("- ") && playlistActual != null) {
-                    // Buscar la canción en el árbol y agregarla a la playlist actual
-                    String nombreCancion = linea.substring(2).trim(); // Eliminar "- "
-                    NodoCancion cancion = arbolCanciones.buscarCancion(nombreCancion);
-
-                    if (cancion != null) {
-                        playlistActual.insertarNodoCancion(cancion); // Insertar en la sublista de canciones
-                    } else {
-                        System.err.println("La canción \"" + nombreCancion + "\" no se encontró en el árbol de canciones.");
-                    }
-                }
-            }
-        } catch (IOException e) {
-            System.err.println("Error al cargar el archivo: " + e.getMessage());
+    public void guardarEnArchivoPlaylist(String nombreUsuario, ObjectOutputStream out) throws IOException {
+        NodoPlaylistPropia actual = listaPlaylistPropias;
+        while(actual != null){
+            actual.getSublistaCanciones().guardarCancionesDeLista(nombreUsuario, actual.getNombre(), out);
+            actual = actual.getSiguiente();
         }
     }
+
 
 
 

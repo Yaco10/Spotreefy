@@ -1,9 +1,10 @@
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.Serializable;
+import java.io.ObjectOutputStream;
 
-public class SubListaCanciones implements Serializable {
+
+public class SubListaCanciones  {
     NodoSublistaCanciones listaCanciones;
     public SubListaCanciones() {
         this.listaCanciones = null;
@@ -15,18 +16,26 @@ public class SubListaCanciones implements Serializable {
         listaCanciones = nuevo;
 
     }
-    //sin orden
 
-    public void guardarCanciones(BufferedWriter bw) throws IOException {
+    public void guardarCancionesDeLista(String nombreUsuario, String nombrePlaylist, ObjectOutputStream out) throws IOException {
         NodoSublistaCanciones actual = listaCanciones;
-        bw.write("Canciones:");
-        bw.newLine();
-        while (actual != null) {
-            bw.write("- " + actual.getCancion().getTitulo());
-            bw.newLine();
-            actual = actual.getSiguiente();
+        if(actual != null) {
+            while (actual != null) {
+                ArchListasPropias registro = new ArchListasPropias(nombreUsuario,nombrePlaylist,actual.getCancion());
+                out.writeObject(registro);
+                actual = actual.getSiguiente();
+
+            }
         }
+        else {
+            ArchListasPropias registro = new ArchListasPropias(nombreUsuario,nombrePlaylist,null);
+            out.writeObject(registro);
+        }
+
     }
-
-
 }
+
+
+
+
+

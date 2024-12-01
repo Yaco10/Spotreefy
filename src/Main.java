@@ -4,11 +4,16 @@ public class Main {
         ArbolCanciones arbolcanciones = new ArbolCanciones();
         ListaAutores listaAutores = new ListaAutores();
         arbolcanciones.cargarArchivo("ArchCanciones");
-        listaAutores.cargarArchivo("ArchCanciones",arbolcanciones);
+        listaAutores.cargarAutores("ArchCanciones",arbolcanciones);
+        arbUs.cargarArchivoPlaylist("ArchListasPropia");
+        arbUs.cargarArchivoPlaylistSeguida("ArchListasSeguida");
         Menu menu = new Menu(arbUs, arbolcanciones, listaAutores);
         menu.mostrarMenuPrincipal();
-        arbUs.guardarArbol("archUsuarios");
-        listaAutores.guardarArchivo("ArchCanciones");
+        arbUs.guardarEnArchivo("archUsuarios");
+        listaAutores.guardarEnArchivoCanciones("ArchCanciones");
+        arbUs.guardarEnArchivoPlaylist("ArchListasPropia");
+        arbUs.guardarArchivoPlaylistSeguida("ArchListasSeguida");
+
 
 
     }

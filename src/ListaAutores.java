@@ -12,23 +12,23 @@ class ListaAutores {
     // Inserción con orden alfabético.
     public void insertarAutor(String nombre) {
         NodoAutor nuevo = new NodoAutor(nombre);
+
+        // Si la lista está vacía o el nuevo autor debe ir al principio
         if (this.listaAutores == null || nombre.compareToIgnoreCase(this.listaAutores.getNombre()) < 0) {
             nuevo.setSiguiente(listaAutores);
             this.listaAutores = nuevo;
         } else {
-            NodoAutor anterior = null, actual = this.listaAutores;
-            while (actual != null && actual.getNombre().compareToIgnoreCase(nuevo.getNombre()) > 0) {
-                anterior = actual;
+            // Si no es al principio, se recorre la lista
+            NodoAutor actual = this.listaAutores;
+            while (actual.getSiguiente() != null && actual.getSiguiente().getNombre().compareToIgnoreCase(nuevo.getNombre()) < 0) {
                 actual = actual.getSiguiente();
             }
-            if (actual.getNombre().compareToIgnoreCase(nuevo.getNombre()) == 0) {
-                return;
-            }
-            nuevo.setSiguiente(actual);
-            anterior.setSiguiente(nuevo);
-            this.listaAutores = nuevo;
+            // Insertar al final o entre elementos
+            nuevo.setSiguiente(actual.getSiguiente());
+            actual.setSiguiente(nuevo);
         }
     }
+
 
     // TO DO
 
@@ -40,53 +40,41 @@ class ListaAutores {
         return autor;
     }
 
-    // Método para guardar los datos de la lista de autores en un archivo
-    public void guardarArchivo(String nombreArchivo) {
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(nombreArchivo))) {
-            NodoAutor autor = this.listaAutores;
-            while (autor != null) {
-                autor.getListaCanciones().guardarCanciones(bw, autor.getNombre()); //deriva la otra carga a la ListaCacniones
-                autor = autor.getSiguiente();
+    //archivos
+
+    public void guardarEnArchivoCanciones(String archivo) {
+        NodoAutor actual = this.listaAutores;
+        try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(archivo))) {
+            while (actual != null) {
+                actual.getListaCanciones().guardarCanciones(actual.getNombre(),out);
+                actual = actual.getSiguiente();
             }
         } catch (IOException e) {
-            System.out.println("Error al escribir el archivo: " + e.getMessage());
-            e.printStackTrace(); // Agrega esto si quieres que se imprima la traza de la excepción
-        } catch (Exception e) {
-            System.out.println("Se ha producido un error inesperado: " + e.getMessage());
-            e.printStackTrace(); // Imprime la traza de la excepción si es necesario
+            e.printStackTrace();
         }
     }
 
-    // Método para cargar los datos del archivo y llenar la lista de autores
-    public void cargarArchivo(String nombreArchivo, ArbolCanciones arbolCanciones) {
-        File archivo = new File(nombreArchivo);
-        try{
-            if (!archivo.exists()) {
-                // Crear el archivo si no existe
-                archivo.createNewFile();
-                System.out.println("Archivo creado: " + archivo.getAbsolutePath());
+    public void cargarAutores(String nombreArchivo, ArbolCanciones arbolCanciones) {
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(nombreArchivo))) {
+            ArchCanciones actual;
+
+            while ((actual = (ArchCanciones) ois.readObject()) != null) {
+                insertarAutor(actual.getNombreAutor());
+                NodoAutor autor = buscarAutor(actual.getNombreAutor());
+                NodoCancion cancion = arbolCanciones.buscarCancion(actual.getNombreCancion());
+                autor.getListaCanciones().insertarCancionOrdenadoCircular(cancion);
             }
-            try (BufferedReader br = new BufferedReader(new FileReader(nombreArchivo))) {
-                String linea;
-                while ((linea = br.readLine()) != null) {
-                    // Separar el título de la canción y el nombre del autor
-                    String[] partes = linea.split(" - ");
-                    if (partes.length == 2) {
-                        String tituloCancion = partes[0].trim();
-                        String nombreAutor = partes[1].trim();
 
-                        // Insertar en la lista de autores
-                        insertarAutor(nombreAutor);
-
-                        // Obtener Referencias y enlazar nodoCancion con NodoAutor
-                        NodoCancion nodoCancion = arbolCanciones.buscarCancion(tituloCancion);
-                        NodoAutor autor = buscarAutor(nombreAutor);
-                        autor.getListaCanciones().insertarCancionOrdenadoCircular(nodoCancion);
-                    }
-                }
-        }
-        } catch (IOException e) {
-            System.out.println("Error al leer el archivo: " + e.getMessage());
+        } catch (FileNotFoundException e) {
+            System.out.println("Archivo autores no encontrado. Creando archivo nuevo.");
+            try (BufferedWriter bw = new BufferedWriter(new FileWriter(nombreArchivo))) {
+            } catch (IOException exc) {
+                exc.printStackTrace();
+            }
+        } catch (EOFException e) {
+            System.out.println("Autores Cargados Correctamente.");
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
         }
     }
 

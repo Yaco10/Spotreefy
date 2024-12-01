@@ -12,30 +12,31 @@ public class Interfaz {
     private ArbolUsuarios arbolUsuarios;
 
     public Interfaz (ArbolUsuarios arbolUsuarios ,ArbolCanciones arbolCanciones, ListaAutores listaAutores) {
-        this.usuario = null;
         this.arbolUsuarios = arbolUsuarios;
         this.arbolCanciones = arbolCanciones;
         this.listaAutores = listaAutores;
         scanner = new Scanner(System.in);
+    }
 
+    public void inicializarUsuario(NodoUsuario usuario) {
+        this.usuario = usuario;
     }
 
 
     public void mostrarInterfaz(){
-        usuario.getPlaylistsPropias().cargarLista("ArchListaPropia",arbolCanciones);
         int opcion;
         System.out.println("Usuario" + usuario.getNombre());
         System.out.println("Listas Propias");
         usuario.getPlaylistsPropias().mostrarPlaylistPropia();
         System.out.println("Listas Seguidas");
-        //usuario.getPlaylistsPropias().mostrarPlaylistPropia();
+        usuario.getPlaylistsSeguidas().mostrarPlaylists();
         System.out.println();
         System.out.println("1.Agregar Cancion");
         System.out.println("2.Crear Playlist Propia");
         System.out.println("3.Agregar Cancion a Playlist por Titulo");
         System.out.println("4.Agregar Cancion a Playlist por Artista");
         System.out.println("5.Eliminar Cancion");
-        //System.out.println("6.Eliminar Cancion");
+        System.out.println("6.Seguir Playlist de otro usuario");
         System.out.println("7.Volver al menu Principal");
         opcion = scanner.nextInt();
         scanner.nextLine();
@@ -61,7 +62,6 @@ public class Interfaz {
                 break;
             case 7:
                 System.out.println("Volviendo a menu principal...");
-                usuario.getPlaylistsPropias().guardarLista("ArchListaPropia");
                 break;
             default:
                 System.out.println("Opcion invalida");
@@ -186,7 +186,26 @@ public class Interfaz {
     }
 
     private void seguirLista () {
-
+        System.out.println("Ingrese el nombre del usuario a seguir");
+        String nombreUsuario = scanner.nextLine();
+        NodoUsuario userSeguido = arbolUsuarios.buscarUsuario(nombreUsuario);
+        if(userSeguido != null){
+            ListaPlaylistsPropias listaUserSeguido = userSeguido.getPlaylistsPropias();
+            System.out.println("Lista de user: " + userSeguido.getNombre());
+            listaUserSeguido.mostrarPlaylistPropia();
+            System.out.println("Seleccione una playlist de la lista");
+            String nombrePlaylistSeguida = scanner.nextLine();
+            NodoPlaylistPropia playlistSeguida = listaUserSeguido.buscarPlaylist(nombrePlaylistSeguida);
+            if(playlistSeguida != null){
+                usuario.getPlaylistsSeguidas().insertarPlaylist(nombreUsuario,nombrePlaylistSeguida);
+            }
+            {
+                System.out.println("La playlist no existe");
+            }
+        }else {
+            System.out.println("No se encontro el nombre del usuario");
+        }
+        mostrarInterfaz();
     }
 
     //VALIDACIONES

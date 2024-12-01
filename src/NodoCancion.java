@@ -1,8 +1,11 @@
-class NodoCancion {
+import java.io.Serializable;
+
+class NodoCancion implements Serializable {
     String titulo; // factor de orden en ArbolCanciones
     // String autor ¿?
-    NodoCancion mayores, menores;
-    NodoCancion siguiente; // siguiente cancion de NodoAutor
+    transient NodoCancion mayores, menores;
+    transient NodoCancion siguiente; // siguiente cancion de NodoAutor
+    private static final long serialVersionUID = 1L;
 
     // ¿agregar campos?
 

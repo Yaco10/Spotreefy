@@ -2,14 +2,16 @@
 // lista de listas propias (playlists propias)
 // lista de listas seguidas (playlists seguidas)
 
+
 import java.io.Serializable;
 
-class NodoUsuario implements Serializable {
+class NodoUsuario  implements Serializable {
     String nombre; // factor de orden en ArbolUsuario
     String contraseña;
-    ListaPlaylistsPropias playlistsPropias;
-    ListaPlaylistsSeguidas playlistsSeguidas;
-    NodoUsuario menores, mayores;
+    transient ListaPlaylistsPropias playlistsPropias;
+    transient ListaPlaylistsSeguidas playlistsSeguidas;
+    transient NodoUsuario menores, mayores;
+    private static final long serialVersionUID = 1L;
 
     public NodoUsuario(String nombre, String contraseña) {
         this.nombre = nombre;
@@ -49,6 +51,17 @@ class NodoUsuario implements Serializable {
     public ListaPlaylistsPropias getPlaylistsPropias() {
         return this.playlistsPropias;
     }
+
+    public ListaPlaylistsSeguidas getPlaylistsSeguidas() {return playlistsSeguidas;}
+
+    public void setPlaylistsSeguidas(ListaPlaylistsSeguidas playlistsSeguidas) {this.playlistsSeguidas = playlistsSeguidas;}
+
+    @Override
+    public String toString() {
+        return "NodoUsuario{nombre=" + nombre + ", contraseña=" + contraseña + "}";
+    }
+
+
 }
 
 
