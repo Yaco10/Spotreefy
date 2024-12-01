@@ -1,6 +1,3 @@
-// autor
-// lista circular
-
 class NodoAutor {
     private String nombre; // factor de orden en ListaAutores
     private ListaCircular listaCanciones; // (lista circular)
@@ -20,14 +17,9 @@ class NodoAutor {
         return this.siguiente;
     }
 
-    public void setSiguiente(NodoAutor nodo) {
-        this.siguiente = nodo;
-    }
+    public void setSiguiente(NodoAutor nodo) { this.siguiente = nodo; }
 
-    public ListaCircular getListaCanciones() {
-        return this.listaCanciones;
-    }
-
+    public ListaCircular getListaCanciones() { return this.listaCanciones; }
 
 
 }

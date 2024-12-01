@@ -7,8 +7,6 @@ class NodoCancion implements Serializable {
     transient NodoCancion siguiente; // siguiente cancion de NodoAutor
     private static final long serialVersionUID = 1L;
 
-    // ¿agregar campos?
-
     public NodoCancion(String titulo) {
         this.titulo = titulo;
         this.menores = null; // Innecesario

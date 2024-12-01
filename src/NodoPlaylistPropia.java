@@ -26,9 +26,7 @@ class NodoPlaylistPropia implements Serializable {
         this.siguiente = nodo;
     }
 
-    // TO DO
-    // Inserción sin orden.
-    
+
     public void insertarNodoCancion(NodoCancion cancion) {
         sublistaCanciones.insertarCancion(cancion);
     }

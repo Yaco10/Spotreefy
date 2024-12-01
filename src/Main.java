@@ -5,14 +5,14 @@ public class Main {
         ListaAutores listaAutores = new ListaAutores();
         arbolcanciones.cargarArchivo("ArchCanciones");
         listaAutores.cargarAutores("ArchCanciones",arbolcanciones);
-        arbUs.cargarArchivoPlaylist("ArchListasPropia");
-        arbUs.cargarArchivoPlaylistSeguida("ArchListasSeguida");
+        arbUs.cargarPlaylistsPropias("ArchListasPropia");
+        arbUs.cargarPlaylistsSeguidas("ArchListasSeguida");
         Menu menu = new Menu(arbUs, arbolcanciones, listaAutores);
         menu.mostrarMenuPrincipal();
         arbUs.guardarEnArchivo("archUsuarios");
         listaAutores.guardarEnArchivoCanciones("ArchCanciones");
-        arbUs.guardarEnArchivoPlaylist("ArchListasPropia");
-        arbUs.guardarArchivoPlaylistSeguida("ArchListasSeguida");
+        arbUs.guardarPlaylistsSeguidas("ArchListasPropia");
+        arbUs.guardarPlaylistsSeguidas("ArchListasSeguida");
 
 
 

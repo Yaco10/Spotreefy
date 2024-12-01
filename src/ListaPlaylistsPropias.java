@@ -1,83 +1,85 @@
 import java.io.*;
 
-class ListaPlaylistsPropias {
-    NodoPlaylistPropia listaPlaylistPropias;
+public class ListaPlaylistsPropias {
+    private NodoPlaylistPropia listaPlaylistPropias;
 
     public ListaPlaylistsPropias() {
-    this.listaPlaylistPropias = null;
+        this.listaPlaylistPropias = null;
     }
 
-    public void insertarPlaylist(String nombrePlaylist){
+    public void insertarPlaylist(String nombrePlaylist) {
         NodoPlaylistPropia nuevo = new NodoPlaylistPropia(nombrePlaylist);
-        if(listaPlaylistPropias == null || nombrePlaylist.compareTo(listaPlaylistPropias.getNombre()) < 0){
+        if (listaPlaylistPropias == null || nombrePlaylist.compareTo(listaPlaylistPropias.getNombre()) < 0) {
             nuevo.setSiguiente(listaPlaylistPropias);
             this.listaPlaylistPropias = nuevo;
-        }
-        else{
+        } else {
             NodoPlaylistPropia actual = listaPlaylistPropias;
             NodoPlaylistPropia anterior = null;
-            while(actual != null && nombrePlaylist.compareTo(actual.getNombre()) > 0){
+            while (actual != null && nombrePlaylist.compareTo(actual.getNombre()) > 0) {
                 anterior = actual;
                 actual = actual.getSiguiente();
             }
-            if(anterior == null){
-                nuevo.setSiguiente(listaPlaylistPropias);
-                this.listaPlaylistPropias = nuevo;
-            }
-            else{
+            nuevo.setSiguiente(actual);
+            if (anterior != null) {
                 anterior.setSiguiente(nuevo);
-                nuevo.setSiguiente(actual);
             }
-
         }
     }
 
-    public NodoPlaylistPropia buscarPlaylist(String nombrePlaylist){
+    public NodoPlaylistPropia buscarPlaylist(String nombrePlaylist) {
         NodoPlaylistPropia actual = listaPlaylistPropias;
-        while(actual != null && !(nombrePlaylist.equalsIgnoreCase(actual.getNombre()))){
+        while (actual != null) {
+            if (nombrePlaylist.equalsIgnoreCase(actual.getNombre())) {
+                return actual;
+            }
             actual = actual.getSiguiente();
         }
-        if(actual == null){
-            return null;
-        }
-        return actual;
+        return null; // No se encontró la playlist
     }
 
-    public void eliminarPlaylist(String nombrePlaylist){
-        if(listaPlaylistPropias.getNombre().equals(nombrePlaylist)){
-            listaPlaylistPropias = listaPlaylistPropias.getSiguiente();
+    public void eliminarPlaylist(String nombrePlaylist) {
+        if (listaPlaylistPropias == null) {
+            return; // Lista vacía
         }
-        else{
-            NodoPlaylistPropia actual = listaPlaylistPropias;
-            NodoPlaylistPropia anterior = null;
-            while(actual != null && !actual.equals(nombrePlaylist)){
-                anterior = actual;
-                actual = actual.getSiguiente();
-            }
+
+        if (listaPlaylistPropias.getNombre().equalsIgnoreCase(nombrePlaylist)) {
+            listaPlaylistPropias = listaPlaylistPropias.getSiguiente();
+            return;
+        }
+
+        NodoPlaylistPropia actual = listaPlaylistPropias;
+        NodoPlaylistPropia anterior = null;
+        while (actual != null && !actual.getNombre().equalsIgnoreCase(nombrePlaylist)) {
+            anterior = actual;
+            actual = actual.getSiguiente();
+        }
+
+        if (actual != null && anterior != null) {
             anterior.setSiguiente(actual.getSiguiente());
         }
     }
 
-    public void mostrarPlaylistPropia(){
+    public void mostrarPlaylistPropia() {
+        if (listaPlaylistPropias == null) {
+            System.out.println("No hay playlists disponibles.");
+            return;
+        }
+
         NodoPlaylistPropia actual = listaPlaylistPropias;
-        while(actual != null){
+        while (actual != null) {
             System.out.println(actual.getNombre());
             actual = actual.getSiguiente();
         }
         System.out.println();
     }
 
-    //ARCHIVOS
+    // Métodos relacionados con archivos
 
     public void guardarEnArchivoPlaylist(String nombreUsuario, ObjectOutputStream out) throws IOException {
         NodoPlaylistPropia actual = listaPlaylistPropias;
-        while(actual != null){
+        while (actual != null) {
             actual.getSublistaCanciones().guardarCancionesDeLista(nombreUsuario, actual.getNombre(), out);
             actual = actual.getSiguiente();
         }
     }
-
-
-
-
 }

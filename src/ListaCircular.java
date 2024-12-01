@@ -3,10 +3,10 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 
 public class ListaCircular {
-    NodoCancion listaCanciones;
+    private NodoCancion listaCanciones;
 
     public ListaCircular() {
-        listaCanciones = null;
+        this.listaCanciones = null;
     }
 
     public void insertarCancionOrdenadoCircular(NodoCancion cancion) {
@@ -32,7 +32,6 @@ public class ListaCircular {
         }
     }
 
-
     public void mostrarListaCanciones() {
         if (this.listaCanciones == null) { // Verifica si la lista está vacía
             System.out.println("La lista de canciones está vacía.");
@@ -47,32 +46,32 @@ public class ListaCircular {
         System.out.println();
     }
 
-
     public NodoCancion buscarCancion(String titulo) {
-        if(this.listaCanciones != null) {
-            if(this.listaCanciones.getTitulo().equals(titulo)) {
-                return this.listaCanciones;
-            }
-            else{
-                NodoCancion actual = this.listaCanciones.getSiguiente();
-                while (actual != listaCanciones && actual.equals(titulo)) {
-                    actual = actual.getSiguiente();
-                }
+        if (this.listaCanciones == null) { // Verifica si la lista está vacía
+            return null;
+        }
+
+        NodoCancion actual = this.listaCanciones;
+        do {
+            if (actual.getTitulo().equalsIgnoreCase(titulo)) {
                 return actual;
             }
-        }
-        return null;
+            actual = actual.getSiguiente();
+        } while (actual != this.listaCanciones);
+
+        return null; // No se encontró la canción
     }
 
     public void guardarCanciones(String nombreAutor, ObjectOutputStream out) throws IOException {
-        NodoCancion actual = this.listaCanciones;
-        if (actual != null) {
-            do {
-                ArchCanciones registro = new ArchCanciones(actual.getTitulo(), nombreAutor);
-                out.writeObject(registro);
-                actual = actual.getSiguiente();
-            } while (actual != listaCanciones); // Asegúrate de recorrer toda la lista circular
+        if (this.listaCanciones == null) { // Verifica si la lista está vacía
+            return;
         }
-    }
 
+        NodoCancion actual = this.listaCanciones;
+        do {
+            ArchCanciones registro = new ArchCanciones(actual.getTitulo(), nombreAutor);
+            out.writeObject(registro);
+            actual = actual.getSiguiente();
+        } while (actual != this.listaCanciones);
+    }
 }

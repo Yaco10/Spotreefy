@@ -1,15 +1,14 @@
 import java.io.*;
 
-// lista
 class ListaAutores {
-    NodoAutor listaAutores; // (lista ordenada)
+    private NodoAutor listaAutores; // Lista ordenada de autores
 
-    // Constructor innecesario.
+    // Constructor
     public ListaAutores() {
         this.listaAutores = null;
     }
 
-    // Inserción con orden alfabético.
+    // Inserta un autor en orden alfabético
     public void insertarAutor(String nombre) {
         NodoAutor nuevo = new NodoAutor(nombre);
 
@@ -29,24 +28,24 @@ class ListaAutores {
         }
     }
 
-
-    // TO DO
-
+    // Busca un autor por nombre
     public NodoAutor buscarAutor(String nombre) {
         NodoAutor autor = this.listaAutores;
-        while (autor != null && !autor.getNombre().equals(nombre)) {
+        while (autor != null) {
+            if (autor.getNombre().equalsIgnoreCase(nombre)) {
+                return autor;
+            }
             autor = autor.getSiguiente();
         }
-        return autor;
+        return null;
     }
 
-    //archivos
-
-    public void guardarEnArchivoCanciones(String archivo) {
+    // Guarda las canciones de los autores en un archivo
+    public void guardarAutores(String archivo) {
         NodoAutor actual = this.listaAutores;
         try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(archivo))) {
             while (actual != null) {
-                actual.getListaCanciones().guardarCanciones(actual.getNombre(),out);
+                actual.getListaCanciones().guardarCanciones(actual.getNombre(), out);
                 actual = actual.getSiguiente();
             }
         } catch (IOException e) {
@@ -54,6 +53,7 @@ class ListaAutores {
         }
     }
 
+    // Carga autores y sus canciones desde un archivo
     public void cargarAutores(String nombreArchivo, ArbolCanciones arbolCanciones) {
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(nombreArchivo))) {
             ArchCanciones actual;
@@ -66,16 +66,16 @@ class ListaAutores {
             }
 
         } catch (FileNotFoundException e) {
-            System.out.println("Archivo autores no encontrado. Creando archivo nuevo.");
+            System.out.println("Archivo de autores no encontrado. Creando uno nuevo.");
             try (BufferedWriter bw = new BufferedWriter(new FileWriter(nombreArchivo))) {
+                // Archivo vacío creado
             } catch (IOException exc) {
                 exc.printStackTrace();
             }
         } catch (EOFException e) {
-            System.out.println("Autores Cargados Correctamente.");
+            System.out.println("Autores cargados correctamente.");
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
-
 }
