@@ -11,11 +11,20 @@ public class SubListaCanciones  {
     }
 
     public void insertarCancion(NodoCancion cancion) {
+        NodoSublistaCanciones actual = listaCanciones;
+        // Verificar si la canción ya existe en la lista
+        while (actual != null) {
+            if (actual.getCancion().equals(cancion)) {
+                return; // No se inserta si la canción ya existe
+            }
+            actual = actual.getSiguiente();
+        }
+        // Si no se encontró la canción, insertamos al principio de la lista
         NodoSublistaCanciones nuevo = new NodoSublistaCanciones(cancion);
         nuevo.setSiguiente(listaCanciones);
         listaCanciones = nuevo;
-
     }
+
 
     public void guardarCancionesDeLista(String nombreUsuario, String nombrePlaylist, ObjectOutputStream out) throws IOException {
         NodoSublistaCanciones actual = listaCanciones;

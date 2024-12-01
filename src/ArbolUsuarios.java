@@ -72,7 +72,7 @@ class ArbolUsuarios {
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(archivo))) {
             NodoUsuario actual;
             while ((actual = (NodoUsuario) ois.readObject()) != null) {
-                insertarUsuario(actual.getNombre(), actual.getContrasena());
+                insertarUsuario(actual.getNombre(), actual.getContraseña());
             }
         } catch (FileNotFoundException e) {
             System.out.println("Archivo no encontrado. Creando archivo nuevo.");

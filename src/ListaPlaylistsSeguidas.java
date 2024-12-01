@@ -14,12 +14,19 @@ class ListaPlaylistsSeguidas {
         NodoPlaylistSeguida nueva = new NodoPlaylistSeguida(dueño, nombre);
         NodoPlaylistSeguida anterior = null, actual = this.listaPlaylistsSeguidas;
 
-        // Bucle para encontrar la posición correcta
-        while (actual != null && (actual.getUsuario().compareToIgnoreCase(dueño) < 0 ||
-                (actual.getUsuario().compareToIgnoreCase(dueño) == 0 &&
-                        actual.getNombre().compareToIgnoreCase(nombre) < 0))) {
+        // Bucle para encontrar la posición correcta y verificar duplicados
+        while (actual != null &&
+                (actual.getUsuario().compareToIgnoreCase(dueño) < 0 ||
+                        (actual.getUsuario().compareToIgnoreCase(dueño) == 0 &&
+                                actual.getNombre().compareToIgnoreCase(nombre) < 0))) {
             anterior = actual;
             actual = actual.getSiguiente();
+        }
+
+        // Verificar si ya existe una playlist con el mismo dueño y nombre
+        if (actual != null && actual.getUsuario().equalsIgnoreCase(dueño) &&
+                actual.getNombre().equalsIgnoreCase(nombre)) {
+            return; // No se inserta si ya existe un nodo con el mismo dueño y nombre
         }
 
         if (anterior == null) { // Inserción al inicio
@@ -30,6 +37,7 @@ class ListaPlaylistsSeguidas {
             anterior.setSiguiente(nueva);
         }
     }
+
 
     // Verifica si existe una playlist con el dueño y nombre especificados
     public boolean existePlaylist(String dueño, String nombre) {

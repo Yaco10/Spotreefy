@@ -20,13 +20,24 @@ class ListaAutores {
             // Si no es al principio, se recorre la lista
             NodoAutor actual = this.listaAutores;
             while (actual.getSiguiente() != null && actual.getSiguiente().getNombre().compareToIgnoreCase(nuevo.getNombre()) < 0) {
+                if (actual.getNombre().equalsIgnoreCase(nuevo.getNombre())) {
+                    // Si ya existe un autor con el mismo nombre, no se inserta.
+                    return;
+                }
                 actual = actual.getSiguiente();
             }
+
+            // Verificar si el nuevo autor ya está en la lista
+            if (actual.getNombre().equalsIgnoreCase(nuevo.getNombre())) {
+                return; // Ya existe un autor con el mismo nombre, no se inserta.
+            }
+
             // Insertar al final o entre elementos
             nuevo.setSiguiente(actual.getSiguiente());
             actual.setSiguiente(nuevo);
         }
     }
+
 
     // Busca un autor por nombre
     public NodoAutor buscarAutor(String nombre) {

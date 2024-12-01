@@ -9,16 +9,30 @@ public class ListaPlaylistsPropias {
 
     public void insertarPlaylist(String nombrePlaylist) {
         NodoPlaylistPropia nuevo = new NodoPlaylistPropia(nombrePlaylist);
+
+        // Caso 1: Lista vacía o el nuevo nodo debe ir al principio
         if (listaPlaylistPropias == null || nombrePlaylist.compareTo(listaPlaylistPropias.getNombre()) < 0) {
+            // Verificar si el nombre ya existe en la lista
+            if (listaPlaylistPropias != null && listaPlaylistPropias.getNombre().equalsIgnoreCase(nombrePlaylist)) {
+                return; // No se inserta si el nombre ya existe
+            }
             nuevo.setSiguiente(listaPlaylistPropias);
             this.listaPlaylistPropias = nuevo;
         } else {
+            // Caso 2: Inserción en el medio o al final
             NodoPlaylistPropia actual = listaPlaylistPropias;
             NodoPlaylistPropia anterior = null;
+
             while (actual != null && nombrePlaylist.compareTo(actual.getNombre()) > 0) {
                 anterior = actual;
                 actual = actual.getSiguiente();
             }
+
+            // Verificar si el nombre ya existe en la lista antes de la inserción
+            if (actual != null && actual.getNombre().equalsIgnoreCase(nombrePlaylist)) {
+                return; // No se inserta si el nombre ya existe
+            }
+
             nuevo.setSiguiente(actual);
             if (anterior != null) {
                 anterior.setSiguiente(nuevo);

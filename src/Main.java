@@ -3,18 +3,16 @@ public class Main {
         ArbolUsuarios arbUs = new ArbolUsuarios();
         ArbolCanciones arbolcanciones = new ArbolCanciones();
         ListaAutores listaAutores = new ListaAutores();
-        arbolcanciones.cargarArchivo("ArchCanciones");
+        arbolcanciones.cargarCanciones("ArchCanciones");
         listaAutores.cargarAutores("ArchCanciones",arbolcanciones);
         arbUs.cargarPlaylistsPropias("ArchListasPropia");
         arbUs.cargarPlaylistsSeguidas("ArchListasSeguida");
         Menu menu = new Menu(arbUs, arbolcanciones, listaAutores);
         menu.mostrarMenuPrincipal();
         arbUs.guardarEnArchivo("archUsuarios");
-        listaAutores.guardarEnArchivoCanciones("ArchCanciones");
-        arbUs.guardarPlaylistsSeguidas("ArchListasPropia");
+        listaAutores.guardarAutores("ArchCanciones");
+        arbUs.guardarPlaylistsPropias("ArchListasPropia");
         arbUs.guardarPlaylistsSeguidas("ArchListasSeguida");
-
-
 
     }
 }

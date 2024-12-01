@@ -1,5 +1,4 @@
 import java.util.Scanner;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Interfaz {
@@ -11,7 +10,7 @@ public class Interfaz {
     private ListaAutores listaAutores;
     private ArbolUsuarios arbolUsuarios;
 
-    public Interfaz (ArbolUsuarios arbolUsuarios ,ArbolCanciones arbolCanciones, ListaAutores listaAutores) {
+    public Interfaz(ArbolUsuarios arbolUsuarios, ArbolCanciones arbolCanciones, ListaAutores listaAutores) {
         this.arbolUsuarios = arbolUsuarios;
         this.arbolCanciones = arbolCanciones;
         this.listaAutores = listaAutores;
@@ -22,209 +21,233 @@ public class Interfaz {
         this.usuario = usuario;
     }
 
-
-    public void mostrarInterfaz(){
+    public void mostrarInterfaz() {
         int opcion;
-        System.out.println("Usuario" + usuario.getNombre());
-        System.out.println("Listas Propias");
-        usuario.getPlaylistsPropias().mostrarPlaylistPropia();
-        System.out.println("Listas Seguidas");
-        usuario.getPlaylistsSeguidas().mostrarPlaylists();
-        System.out.println();
-        System.out.println("1.Agregar Cancion");
-        System.out.println("2.Crear Playlist Propia");
-        System.out.println("3.Agregar Cancion a Playlist por Titulo");
-        System.out.println("4.Agregar Cancion a Playlist por Artista");
-        System.out.println("5.Eliminar Cancion");
-        System.out.println("6.Seguir Playlist de otro usuario");
-        System.out.println("7.Volver al menu Principal");
-        opcion = scanner.nextInt();
-        scanner.nextLine();
+        do {
+            System.out.println("\nBienvenido, " + usuario.getNombre());
+            System.out.println("===== Menú Principal =====");
+            System.out.println();
+            System.out.println("===== Listas Propias =====");
+            usuario.getPlaylistsPropias().mostrarPlaylistPropia();
+            System.out.println();
+            System.out.println("===== Listas Seguidas =====");
+            usuario.getPlaylistsSeguidas().mostrarPlaylists();
+            System.out.println();
+            System.out.println("===== Opciones =====");
+            System.out.println();
+            System.out.println("1. Agregar Canción");
+            System.out.println("2. Crear Playlist Propia");
+            System.out.println("3. Agregar Canción a Playlist por Título");
+            System.out.println("4. Agregar Canción a Playlist por Autor");
+            System.out.println("5. Eliminar Playlist Propia");
+            System.out.println("6. Seguir Playlist de otro usuario");
+            System.out.println("7. Volver al menú principal");
+            System.out.println("Ingrese una opción (o 'm' para volver atrás):");
 
-        switch (opcion) {
-            case 1:
-                agregarCancion();
-                break;
-            case 2:
-                crearListaPropia();
-                break;
-            case 3:
-                agregarCancionAListaPorTitulo();
-                break;
-            case 4:
-                agregarCancionPorAutor();
-                break;
-            case 5:
-                eliminarListaPropia();
-                break;
-            case 6:
-                seguirLista();
-                break;
-            case 7:
-                System.out.println("Volviendo a menu principal...");
-                break;
-            default:
-                System.out.println("Opcion invalida");
-        }
+            String input = scanner.nextLine().trim().toLowerCase();
+            if (input.equals("m")) {
+                System.out.println("Volviendo al menú anterior...");
+                return; // Sale del método y vuelve atrás.
+            }
 
+            try {
+                opcion = Integer.parseInt(input);
+                switch (opcion) {
+                    case 1:
+                        agregarCancion();
+                        break;
+                    case 2:
+                        crearListaPropia();
+                        break;
+                    case 3:
+                        agregarCancionAListaPorTitulo();
+                        break;
+                    case 4:
+                        agregarCancionPorAutor();
+                        break;
+                    case 5:
+                        eliminarListaPropia();
+                        break;
+                    case 6:
+                        seguirLista();
+                        break;
+                    case 7:
+                        System.out.println("Volviendo al menú principal...");
+                        break;
+                    default:
+                        System.out.println("Opción inválida. Por favor, intente de nuevo.");
+                        break;
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Error: Ingrese un número válido o 'm' para volver atrás.");
+            }
+        } while (true);
     }
 
-    private void agregarCancion () {
-        //ingreso cancion
-        System.out.println("Ingrese su Cancion");
+    private void agregarCancion() {
+        System.out.println("\nIngrese el nombre de la canción (máximo 30 caracteres o 'm' para volver):");
         String nombreCancion = scanner.nextLine();
-        while(!validarCancion(nombreCancion)){ //valido con regex para cancion
-            System.out.println("Ingrese un nombre con menos de 30 caracteres");
+        if (nombreCancion.equals("m")) return;
+
+        while (!validarCancion(nombreCancion)) {
+            System.out.println("Error: Ingrese un nombre de canción válido (máximo 30 caracteres o 'm' para volver):");
             nombreCancion = scanner.nextLine();
+            if (nombreCancion.equals("m")) return;
         }
+
+        System.out.println("Ingrese el nombre del autor (máximo 8 caracteres o 'm' para volver):");
+        String nombreAutor = scanner.nextLine();
+        if (nombreAutor.equals("m")) return;
+
+        while (!validarNombre(nombreAutor)) {
+            System.out.println("Error: Ingrese un nombre de autor válido (máximo 8 caracteres o 'm' para volver):");
+            nombreAutor = scanner.nextLine();
+            if (nombreAutor.equals("m")) return;
+        }
+
         arbolCanciones.insertarCancion(nombreCancion);
-        //Ingreso autor
-        System.out.println("Ingrese el nombre del autor");
-        String NombreAutor = scanner.nextLine();
-        while(!validarNombre(NombreAutor)){
-            System.out.println("Ingrese un nombre con menos de 8 caracteres");
-            NombreAutor = scanner.nextLine();
-        }
-        listaAutores.insertarAutor(NombreAutor);
-        NodoAutor autor = listaAutores.buscarAutor(NombreAutor);
+        listaAutores.insertarAutor(nombreAutor);
+        NodoAutor autor = listaAutores.buscarAutor(nombreAutor);
         NodoCancion cancion = arbolCanciones.buscarCancion(nombreCancion);
         autor.getListaCanciones().insertarCancionOrdenadoCircular(cancion);
-        System.out.println("Cancion" + nombreCancion + "de"+ NombreAutor +"Agregada correctamente");
-        System.out.println();
-        mostrarInterfaz();
+        System.out.println("Canción '" + nombreCancion + "' de '" + nombreAutor + "' agregada correctamente.");
     }
 
-    private void crearListaPropia () {
-        System.out.println("Ingrese el nombre de la playlist");
+    private void crearListaPropia() {
+        System.out.println("\nIngrese el nombre de la playlist (máximo 8 caracteres o 'm' para volver):");
         String nombrePlaylist = scanner.nextLine();
-        while(!validarNombre(nombrePlaylist)){
-            System.out.println("Ingrese un nombre de la playlist menor a 8 caracteres");
+        if (nombrePlaylist.equals("m")) return;
+
+        while (!validarNombre(nombrePlaylist)) {
+            System.out.println("Error: Ingrese un nombre de playlist válido (máximo 8 caracteres o 'm' para volver):");
+            nombrePlaylist = scanner.nextLine();
+            if (nombrePlaylist.equals("m")) return;
         }
+
         usuario.getPlaylistsPropias().insertarPlaylist(nombrePlaylist);
-        System.out.println("Playlist "+nombrePlaylist+" creada correctamente");
-        System.out.println();
-        mostrarInterfaz();
+        System.out.println("Playlist '" + nombrePlaylist + "' creada correctamente.");
     }
 
-    private void agregarCancionAListaPorTitulo () {
-        System.out.println("Ingrese el nombre de la playlist");
-        String nombrePlaylist = scanner.nextLine();
-        NodoPlaylistPropia Playlist = usuario.getPlaylistsPropias().buscarPlaylist(nombrePlaylist); //obtengo nodo perteneciente a playlist
-        if(Playlist != null){
-            System.out.println("Ingrese nombre de la cancion");
-            String nombreCancion = scanner.nextLine();
-            NodoCancion Cancion = arbolCanciones.buscarCancion(nombreCancion); //obtengo nodo perteneciente a cancion
-            if(Cancion != null){
-                Playlist.insertarNodoCancion(Cancion); //inserto nodo cancion en la playlist correspondiente
-                System.out.println("Cancion "+nombreCancion+" Agregada correctamente a la playlist "+nombrePlaylist);
-                mostrarInterfaz();
-            }
-            else{
-                System.out.println("No se encontro el nombre de la cancion");
-                System.out.println();
-                mostrarInterfaz();
-            }
-        }
-        else{
-            System.out.println("La playlist no existe");
-            System.out.println();
-            mostrarInterfaz();
-        }
-    }
+    private void agregarCancionAListaPorTitulo() {
+        boolean encontrado = false;
 
-    private void agregarCancionPorAutor () {
-        System.out.println("Ingrese el nombre de la playlist");
-        String nombrePlaylist = scanner.nextLine();
-        NodoPlaylistPropia Lista = usuario.getPlaylistsPropias().buscarPlaylist(nombrePlaylist); //obtengo nodo playlist
-        if(Lista != null){
-            System.out.println("Ingrese nombre del autor");
-            String nombreAutor = scanner.nextLine();
-            NodoAutor autor = listaAutores.buscarAutor(nombreAutor); //obtengo nodo autor
-            if(autor != null){
-                autor.getListaCanciones().mostrarListaCanciones();
-                System.out.println("Ingrese una cancion de la lista");
+        while (!encontrado) {
+            System.out.println("\nIngrese el nombre de la playlist (o 'm' para volver):");
+            String nombrePlaylist = scanner.nextLine();
+            if (nombrePlaylist.equals("m")) return;
+
+            NodoPlaylistPropia playlist = usuario.getPlaylistsPropias().buscarPlaylist(nombrePlaylist);
+            if (playlist != null) {
+                System.out.println("Ingrese el nombre de la canción (o 'm' para volver):");
                 String nombreCancion = scanner.nextLine();
-                NodoCancion cancion = autor.getListaCanciones().buscarCancion(nombreCancion);
-                if(cancion != null){
-                    Lista.insertarNodoCancion(cancion);
-                    System.out.println("La cancion "+nombreCancion+ " fue agregada correctamente");
-                    mostrarInterfaz();
+                if (nombreCancion.equals("m")) return;
+
+                NodoCancion cancion = arbolCanciones.buscarCancion(nombreCancion);
+                if (cancion != null) {
+                    playlist.insertarNodoCancion(cancion);
+                    System.out.println("Canción '" + nombreCancion + "' agregada correctamente a la playlist '" + nombrePlaylist + "'.");
+                    encontrado = true;
+                } else {
+                    System.out.println("Error: La canción no se encontró.");
                 }
-                else{
-                    System.out.println("No se encontro el nombre de la cancion");
-                    System.out.println();
-                    mostrarInterfaz();
+            } else {
+                System.out.println("Error: La playlist no existe.");
+            }
+        }
+    }
+
+    private void agregarCancionPorAutor() {
+        boolean encontrado = false;
+
+        while (!encontrado) {
+            System.out.println("\nIngrese el nombre de la playlist (o 'm' para volver):");
+            String nombrePlaylist = scanner.nextLine();
+            if (nombrePlaylist.equals("m")) return;
+
+            NodoPlaylistPropia playlist = usuario.getPlaylistsPropias().buscarPlaylist(nombrePlaylist);
+            if (playlist != null) {
+                System.out.println("Ingrese el nombre del autor (o 'm' para volver):");
+                String nombreAutor = scanner.nextLine();
+                if (nombreAutor.equals("m")) return;
+
+                NodoAutor autor = listaAutores.buscarAutor(nombreAutor);
+                if (autor != null) {
+                    autor.getListaCanciones().mostrarListaCanciones();
+                    System.out.println("Ingrese el nombre de una canción de la lista (o 'm' para volver):");
+                    String nombreCancion = scanner.nextLine();
+                    if (nombreCancion.equals("m")) return;
+
+                    NodoCancion cancion = autor.getListaCanciones().buscarCancion(nombreCancion);
+                    if (cancion != null) {
+                        playlist.insertarNodoCancion(cancion);
+                        System.out.println("Canción '" + nombreCancion + "' agregada correctamente a la playlist '" + nombrePlaylist + "'.");
+                        encontrado = true;
+                    } else {
+                        System.out.println("Error: La canción no se encontró.");
+                    }
+                } else {
+                    System.out.println("Error: El autor no se encontró.");
                 }
-            }
-            else{
-                System.out.println("No se encontro el nombre del autor");
-                System.out.println();
-                mostrarInterfaz();
+            } else {
+                System.out.println("Error: La playlist no existe.");
             }
         }
-        else{
-            System.out.println("La playlist no existe");
-            System.out.println();
-            mostrarInterfaz();
-        }
     }
 
-    private void eliminarListaPropia () {
-        System.out.println("Ingrese el nombre de la playlist que desea eliminar");
-        String nombrePlaylist = scanner.nextLine();
-        if(usuario.getPlaylistsPropias().buscarPlaylist(nombrePlaylist)!=null){
-            usuario.getPlaylistsPropias().eliminarPlaylist(nombrePlaylist);
-            System.out.println("La playlist "+nombrePlaylist+" eliminada correctamente");
-            System.out.println();
-            mostrarInterfaz();
-        }
-        else{
-            System.out.println("No se encontro el nombre de la playlist");
-            System.out.println();
-            mostrarInterfaz();
-        }
-    }
+    private void eliminarListaPropia() {
+        boolean encontrado = false;
 
-    private void seguirLista () {
-        System.out.println("Ingrese el nombre del usuario a seguir");
-        String nombreUsuario = scanner.nextLine();
-        NodoUsuario userSeguido = arbolUsuarios.buscarUsuario(nombreUsuario);
-        if(userSeguido != null){
-            ListaPlaylistsPropias listaUserSeguido = userSeguido.getPlaylistsPropias();
-            System.out.println("Lista de user: " + userSeguido.getNombre());
-            listaUserSeguido.mostrarPlaylistPropia();
-            System.out.println("Seleccione una playlist de la lista");
-            String nombrePlaylistSeguida = scanner.nextLine();
-            NodoPlaylistPropia playlistSeguida = listaUserSeguido.buscarPlaylist(nombrePlaylistSeguida);
-            if(playlistSeguida != null){
-                usuario.getPlaylistsSeguidas().insertarPlaylist(nombreUsuario,nombrePlaylistSeguida);
+        while (!encontrado) {
+            System.out.println("\nIngrese el nombre de la playlist que desea eliminar (o 'm' para volver):");
+            String nombrePlaylist = scanner.nextLine();
+            if (nombrePlaylist.equals("m")) return;
+
+            if (usuario.getPlaylistsPropias().buscarPlaylist(nombrePlaylist) != null) {
+                usuario.getPlaylistsPropias().eliminarPlaylist(nombrePlaylist);
+                System.out.println("Playlist '" + nombrePlaylist + "' eliminada correctamente.");
+                encontrado = true;
+            } else {
+                System.out.println("Error: No se encontró la playlist.");
             }
-            {
-                System.out.println("La playlist no existe");
-            }
-        }else {
-            System.out.println("No se encontro el nombre del usuario");
         }
-        mostrarInterfaz();
     }
 
-    //VALIDACIONES
-    private boolean validarNombre (String texto){
-        Pattern pattern = Pattern.compile(REGEX_NOMBRE);
-        Matcher matcher = pattern.matcher(texto);
-        return matcher.matches();
+    private void seguirLista() {
+        boolean encontrado = false;
+
+        while (!encontrado) {
+            System.out.println("\nIngrese el nombre del usuario a seguir (o 'm' para volver):");
+            String nombreUsuario = scanner.nextLine();
+            if (nombreUsuario.equals("m")) return;
+
+            NodoUsuario userSeguido = arbolUsuarios.buscarUsuario(nombreUsuario);
+            if (userSeguido != null) {
+                ListaPlaylistsPropias listaUserSeguido = userSeguido.getPlaylistsPropias();
+                System.out.println("Listas del usuario '" + nombreUsuario + "':");
+                listaUserSeguido.mostrarPlaylistPropia();
+                System.out.println("Ingrese el nombre de la playlist que desea seguir (o 'm' para volver):");
+                String nombrePlaylistSeguida = scanner.nextLine();
+                if (nombrePlaylistSeguida.equals("m")) return;
+
+                NodoPlaylistPropia playlist = listaUserSeguido.buscarPlaylist(nombrePlaylistSeguida);
+                if (playlist != null) {
+                    usuario.getPlaylistsSeguidas().insertarPlaylist(nombrePlaylistSeguida,nombreUsuario);
+                    System.out.println("Playlist '" + nombrePlaylistSeguida + "' añadida a sus playlists seguidas.");
+                    encontrado = true;
+                } else {
+                    System.out.println("Error: No se encontró la playlist.");
+                }
+            } else {
+                System.out.println("Error: El usuario no se encontró.");
+            }
+        }
     }
 
-    private boolean validarCancion (String texto){
-        Pattern pattern = Pattern.compile(REGEX_CANCION);
-        Matcher matcher = pattern.matcher(texto);
-        return matcher.matches();
+    private boolean validarNombre(String nombre) {
+        return Pattern.matches(REGEX_NOMBRE, nombre);
     }
 
-    //GETTER AND SETTER
-    public void setUsuario(NodoUsuario usuario){
-        this.usuario = usuario;
+    private boolean validarCancion(String nombre) {
+        return Pattern.matches(REGEX_CANCION, nombre);
     }
 }
-
-

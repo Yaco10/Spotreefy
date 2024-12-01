@@ -16,7 +16,15 @@ public class ListaCircular {
         } else if (cancion.getTitulo().compareTo(this.listaCanciones.getTitulo()) <= 0) { // Caso 2: Inserción antes del primer nodo
             NodoCancion ultimo = this.listaCanciones;
             while (ultimo.getSiguiente() != this.listaCanciones) {
+                if (ultimo.getTitulo().equalsIgnoreCase(cancion.getTitulo())) {
+                    // Canción duplicada, no se inserta.
+                    return;
+                }
                 ultimo = ultimo.getSiguiente();
+            }
+            if (ultimo.getTitulo().equalsIgnoreCase(cancion.getTitulo())) {
+                // Canción duplicada, no se inserta.
+                return;
             }
             cancion.setSiguiente(this.listaCanciones);
             ultimo.setSiguiente(cancion);
@@ -25,12 +33,21 @@ public class ListaCircular {
             NodoCancion actual = this.listaCanciones;
             while (actual.getSiguiente() != this.listaCanciones &&
                     actual.getSiguiente().getTitulo().compareTo(cancion.getTitulo()) < 0) {
+                if (actual.getTitulo().equalsIgnoreCase(cancion.getTitulo())) {
+                    // Canción duplicada, no se inserta.
+                    return;
+                }
                 actual = actual.getSiguiente();
+            }
+            // Verificar si el nodo siguiente ya tiene un título igual al de la nueva canción
+            if (actual.getTitulo().equalsIgnoreCase(cancion.getTitulo())) {
+                return; // Canción duplicada, no se inserta.
             }
             cancion.setSiguiente(actual.getSiguiente());
             actual.setSiguiente(cancion);
         }
     }
+
 
     public void mostrarListaCanciones() {
         if (this.listaCanciones == null) { // Verifica si la lista está vacía
@@ -50,7 +67,6 @@ public class ListaCircular {
         if (this.listaCanciones == null) { // Verifica si la lista está vacía
             return null;
         }
-
         NodoCancion actual = this.listaCanciones;
         do {
             if (actual.getTitulo().equalsIgnoreCase(titulo)) {
